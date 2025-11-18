@@ -5,15 +5,12 @@ using UnityEngine.InputSystem;
 
 // Welcome to hell
 
-[RequireComponent(typeof(MBRunner))]
 public sealed class Player : MonoBehaviour
 {
     public References references;
     public Movement movement;
-    public MBRunner runner;
 
     public PlayerInputActions input;
-
 
     private void Awake()
     {
@@ -29,27 +26,13 @@ public sealed class Player : MonoBehaviour
     private void OnEnable()
     {
         input.Player.Enable();
-        EnableMovementActions();
+        movement.EnableMovementActions();
     }
 
     private void OnDisable()
     {
         input.Player.Disable();
-        DisableMovementActions();
-    }
-
-    private void EnableMovementActions()
-    {
-        input.Player.Jump.performed += movement.OnJumpPerformed;
-        input.Player.Dash.performed += movement.OnDashPerformed;
-        input.Player.Slam.performed += movement.OnSlamPerformed;
-    }
-
-    private void DisableMovementActions()
-    {
-        input.Player.Jump.performed -= movement.OnJumpPerformed;
-        input.Player.Dash.performed -= movement.OnDashPerformed;
-        input.Player.Slam.performed -= movement.OnSlamPerformed;
+        movement.DisableMovementActions();
     }
 
     [Serializable]
@@ -72,7 +55,6 @@ public sealed class Player : MonoBehaviour
         private Player player;
         public void Init(Player p) => player = p;
 
-
         [Header("Movement")]
         public float movementSpeed;
         public float acceleration;
@@ -94,6 +76,8 @@ public sealed class Player : MonoBehaviour
 
         private Coroutine jumpCoroutine, dashCoroutine, slamCoroutine;
         private bool hasDash;
+
+        public bool IsGrounded => Physics.CheckSphere(player.references.playerHitbox.transform.position + Vector3.down * groundCheckDistance, groundCheckSphereRadius);
 
         internal void FixedUpdate()
         {
@@ -132,20 +116,20 @@ public sealed class Player : MonoBehaviour
 
         internal void OnJumpPerformed(InputAction.CallbackContext ctx)
         {
-            if (IsGrounded) jumpCoroutine ??= player.runner.StartCoroutine(Jump());
+            if (IsGrounded) jumpCoroutine ??= player.StartCoroutine(Jump());
         }
 
         internal void OnDashPerformed(InputAction.CallbackContext ctx)
         {
-            if (hasDash) dashCoroutine ??= player.runner.StartCoroutine(Dash());
+            if (hasDash) dashCoroutine ??= player.StartCoroutine(Dash());
         }
 
         internal void OnSlamPerformed(InputAction.CallbackContext ctx)
         {
-            if (!IsGrounded) slamCoroutine ??= player.runner.StartCoroutine(Slam());
+            if (!IsGrounded) slamCoroutine ??= player.StartCoroutine(Slam());
         }
 
-        public IEnumerator Jump()
+        internal IEnumerator Jump()
         {
             Rigidbody rb = player.references.playerRigidbody;
 
@@ -156,7 +140,7 @@ public sealed class Player : MonoBehaviour
             jumpCoroutine = null;
         }
 
-        public IEnumerator Dash()
+        internal IEnumerator Dash()
         {
             hasDash = false;
 
@@ -180,7 +164,7 @@ public sealed class Player : MonoBehaviour
             dashCoroutine = null;
         }
 
-        public IEnumerator Slam()
+        internal IEnumerator Slam()
         {
             while (!IsGrounded)
             {
@@ -197,6 +181,18 @@ public sealed class Player : MonoBehaviour
             slamCoroutine = null;
         }
 
-        public bool IsGrounded => Physics.CheckSphere(player.references.playerHitbox.transform.position + Vector3.down * groundCheckDistance, groundCheckSphereRadius);
+        internal void EnableMovementActions()
+        {
+            player.input.Player.Jump.performed += OnJumpPerformed;
+            player.input.Player.Dash.performed += OnDashPerformed;
+            player.input.Player.Slam.performed += OnSlamPerformed;
+        }
+
+        internal void DisableMovementActions()
+        {
+            player.input.Player.Jump.performed -= OnJumpPerformed;
+            player.input.Player.Dash.performed -= OnDashPerformed;
+            player.input.Player.Slam.performed -= OnSlamPerformed;
+        }
     }
 }

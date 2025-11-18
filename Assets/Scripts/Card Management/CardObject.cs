@@ -66,7 +66,7 @@ public class CardObject : MonoBehaviour, ICardObject
         {
             cardState = CardState.InHand;
             
-            transform.SetParent(PlayerReferences.playerHandAnchor, false);
+            transform.SetParent(Players.main.references.playerHandAnchor.transform, false);
 
             cardCollider.enabled = false;
         }

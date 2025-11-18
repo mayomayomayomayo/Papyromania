@@ -182,8 +182,19 @@ public sealed class Player : MonoBehaviour
 
         public IEnumerator Slam()
         {
-            Debug.Log("Slammed");
-            yield return null;
+            while (!IsGrounded)
+            {
+                if (player.input.Player.Dash.ReadValue<float>() > 0f)
+                {
+                    slamCoroutine = null;
+                    yield break;
+                }
+
+                player.references.playerRigidbody.linearVelocity = Vector3.down * Time.fixedDeltaTime * slamFallSpeed;
+                yield return null;
+            }
+
+            slamCoroutine = null;
         }
 
         public bool IsGrounded => Physics.CheckSphere(player.references.playerHitbox.transform.position + Vector3.down * groundCheckDistance, groundCheckSphereRadius);

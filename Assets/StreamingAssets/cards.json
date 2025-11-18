@@ -1,0 +1,40 @@
+{
+    "cards" : [
+        {
+            "type": "Gun",
+            "name": "Glock 77",
+            "description": "Old Austrian model, overengineered to perfection and back. Light recoil and just enough stopping power to suit anyone's needs.",
+            "damage": 20,
+            "ammo": 12,
+            "pathToSprite": "Sprites/Glock_77",
+            "mods": []
+        },
+        {
+            "type": "Gun",
+            "name": "Mare's Handcannon",
+            "description": "Weighty halfbreed of pistol and lever rifle. Hold it very steady, and even farther away from that pretty face o' yours.",
+            "damage": 60,
+            "ammo": 4,
+            "pathToSprite": "Sprites/Glock_77",
+            "mods": ["NonNaturallyDroppable"]
+        }, 
+        {
+            "type": "Gun",
+            "name": "Twelve-eyed Gouger",
+            "description": "Despite the overly dramatic flair of its name, it's but a ten gauge shotgun. Experienced shooters will know that's terrifying enough, though.",
+            "damage": 50,
+            "ammo": 6,
+            "pathToSprite": "Sprites/Twelve-eyed_Gouger",
+            "mods": []
+        },
+        {
+            "type": "Consumable",
+            "name": "Ammunition",
+            "description": "An old stash of standard-issue ammo. Wrapped in damp cloth and surprisingly well-kept for its age. These'll work just fine.",
+            "pathToSprite": "Sprites/Ammunition",
+            "mods": ["NonUsable"],
+            "leftFieldText": "AMM:",
+            "rightFieldText": "QTY:"
+        }
+    ]
+}

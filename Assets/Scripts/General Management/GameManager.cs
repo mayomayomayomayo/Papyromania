@@ -1,17 +1,20 @@
 using UnityEngine;
 
+// This is... uh, subpar (figure out a cleaner way)
+
 public class GameManager : MonoBehaviour
 {
     public GameManager Instance;
+    public Player mainPlayer;
     public int randomSeed = 12345;
 
     private void Awake()
     {
-        SingletonInitialize();
+        AssertSingleton();
         Init();
     }
 
-    private void SingletonInitialize()
+    private void AssertSingleton()
     {
         if (Instance != null && Instance != this)
         {
@@ -27,6 +30,6 @@ public class GameManager : MonoBehaviour
         Random.InitState(randomSeed);
         CardManager.StartUp();
 
-        foreach (CardObject co in Cards.byName.Values) Debug.Log($"{co.cardName} -> {co.ObjectID}");
+        Players.host = mainPlayer;
     }
 }

@@ -6,5 +6,5 @@ public static class Players
 {
     public static List<Player> players;
 
-    public static Player main;
+    public static Player host;
 }

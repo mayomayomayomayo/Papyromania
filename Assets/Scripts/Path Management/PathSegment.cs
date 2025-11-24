@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class PathSegment : ScriptableObject
+public class PathSegment : MonoBehaviour
 {
     public enum SegmentType
     {
@@ -21,4 +21,8 @@ public class PathSegment : ScriptableObject
     [Header("Type")]
     public SegmentType type;
     
+    public void Init()
+    {
+        
+    }
 }

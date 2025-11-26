@@ -28,8 +28,6 @@ public class GameManager : MonoBehaviour
     public void Init()
     {
         Random.InitState(randomSeed);
-        CardManager.StartUp();
-
         Players.host = mainPlayer;
     }
 }

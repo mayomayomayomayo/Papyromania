@@ -6,18 +6,21 @@ public static class RuntimeCardLoader
 {
     public static CardData[] rawCards;
 
-    public static void LoadCardsFromJson() // Call this from GameManager -> OnAwake
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    public static void LoadCardsFromJson()
     {
-        rawCards = Array.Empty<CardData>(); // Static data structures only clear on domain reload, wtf Unity?
+        rawCards = Array.Empty<CardData>();
 
         string json = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "cards.json"));
 
         rawCards = JsonUtility.FromJson<CardDataArray>(json).cards;
+
+        Cards.Load(rawCards);
     }
 }
 
 [Serializable]
-public class CardData // Wrapper class for the card data cause JsonUtility is kinda stupid like that
+public class CardData 
 {
     [Header("General")]
     public string type;
@@ -36,8 +39,8 @@ public class CardData // Wrapper class for the card data cause JsonUtility is ki
     public int ammo;
 }
 
-[Serializable]
-public class CardDataArray // Wrapper class for an array of the already-wrapper class, are we deadass JsonUtil
+[Serializable] // This... really doesn't warrant its own class but okay.
+public class CardDataArray
 {
     public CardData[] cards;
 }

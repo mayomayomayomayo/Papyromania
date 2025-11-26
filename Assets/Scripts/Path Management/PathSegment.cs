@@ -21,8 +21,15 @@ public class PathSegment : MonoBehaviour
     [Header("Type")]
     public SegmentType type;
     
-    public void Init()
+    [Header("Meta")]
+    public float turn;
+
+    public void Awake()
     {
-        
+        entryNode = transform.Find("EntryNode");
+        exitNode = transform.Find("ExitNode");
+        turn = Mathf.DeltaAngle(entryNode.localEulerAngles.y, exitNode.localEulerAngles.y);
+
+        Debug.Log($"{gameObject.name} has turn = {turn}");
     }
 }

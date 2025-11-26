@@ -3,7 +3,6 @@ using System;
 using TMPro;
 using UnityEngine.UI;
 
-
 public class CardObject : MonoBehaviour, ICardObject
 {
     public enum CardType
@@ -54,29 +53,28 @@ public class CardObject : MonoBehaviour, ICardObject
     public Image baseImage;
     public Image artImage;
     public BoxCollider cardCollider;
+    public CardPositionManager cardPositionManager;
 
 
-    public virtual void OnPlay() { Debug.Log($"{cardName} was played."); }
+    public virtual void OnPlay() => Debug.Log($"{cardName} was played."); 
 
-    public virtual void OnDiscard() { Debug.Log($"{cardName} was discarded."); }
+    public virtual void OnDiscard() => Debug.Log($"{cardName} was discarded."); 
 
     public virtual void OnTriggerEnter(Collider other)
     {
         if (cardState == CardState.Dropped && other.CompareTag("Player"))
         {
             cardState = CardState.InHand;
-            
-            transform.SetParent(Players.host.references.playerHandAnchor.transform, false);
-
+            cardPositionManager.OnPickup(other.gameObject);
             cardCollider.enabled = false;
         }
     }
 
-    public virtual void InitializeValues(CardData data) // Always call base from any override
+    public virtual void InitializeValues(CardData data) 
     {
         int oID;
         do oID = UnityEngine.Random.Range(0, int.MaxValue);
-        while (CardManager.objectIDsInUse.Contains(oID));
+        while (Cards.objectIDsInUse.Contains(oID));
         ObjectID = oID;
 
         cardType = data.type.ParseCardType();
@@ -96,6 +94,8 @@ public class CardObject : MonoBehaviour, ICardObject
         GetReferences();
 
         UpdateObjectValues();
+
+        Debug.Log(Cards.objectIDsInUse.Count);
     }
 
     public virtual void GetReferences()
@@ -111,6 +111,7 @@ public class CardObject : MonoBehaviour, ICardObject
         rightField = GetText("CardFieldRight");
 
         cardCollider = GetComponent<BoxCollider>();
+        cardPositionManager = gameObject.AddComponent<CardPositionManager>();
     }
 
     public virtual void UpdateObjectValues()

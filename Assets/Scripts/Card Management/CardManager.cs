@@ -2,27 +2,6 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public static class CardManager
-{
-    public static List<int> objectIDsInUse;
-
-    public static void StartUp()
-    {
-        objectIDsInUse = new();
-        RuntimeCardLoader.LoadCardsFromJson();
-        LoadCards();
-    }
-
-    public static void LoadCards()
-    {
-        foreach (CardData cd in RuntimeCardLoader.rawCards)
-        {
-            CardObject card = CardMaker.NewCardCanvas().InitializeCard(cd);
-            Cards.Add(card);
-        }
-    }
-}
-
 public static class CardMaker
 {
     private static GameObject _cardCanvasPrefab;
@@ -33,7 +12,7 @@ public static class CardMaker
 
     public static CardObject.CardType ParseCardType(this string typeStr) => Enum.TryParse(typeStr, true, out CardObject.CardType result) ? result : throw new Exception($"Couldn't parse CardType {typeStr}");
 
-    public static GameObject NewCardCanvas() => UnityEngine.Object.Instantiate(CardCanvasPrefab); // GameObject.Instantiate looks better, but whatever God says i guess.
+    public static GameObject NewCardCanvas() => UnityEngine.Object.Instantiate(CardCanvasPrefab); 
 
     public static CardObject InitializeCard(this GameObject canvas, CardData data)
     {
@@ -53,13 +32,17 @@ public static class CardMaker
 
 public static class Cards
 {
-    // A vestige of when i tried to also make it ID-based
-    public static Dictionary<string, CardObject> byName = new();
+    public static List<int> objectIDsInUse;
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    public static void ClearCards() => byName = new();
+    public static void Load(CardData[] raw)
+    {
+        cards = new();
+        foreach (CardData cd in raw) Add(CardMaker.NewCardCanvas().InitializeCard(cd));
+    }
+    
+    public static Dictionary<string, CardObject> cards = new();
 
-    public static void Add(CardObject c) => byName[c.cardName] = c;    
+    public static void Add(CardObject c) => cards[c.cardName] = c;    
 
-    public static CardObject Get(string name) => byName.TryGetValue(name, out CardObject card) ? card : null;
+    public static CardObject Get(string name) => cards.TryGetValue(name, out CardObject card) ? card : null;
 }

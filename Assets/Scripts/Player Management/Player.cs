@@ -38,9 +38,7 @@ public sealed class Player : MonoBehaviour
     [Serializable]
     public class References
     {
-        public GameObject playerBase;
-
-        public GameObject playerHitbox;
+        public GameObject player;
 
         public GameObject playerHandAnchor;
 
@@ -77,7 +75,12 @@ public sealed class Player : MonoBehaviour
         private Coroutine jumpCoroutine, dashCoroutine, slamCoroutine;
         private bool hasDash;
 
-        public bool IsGrounded => Physics.CheckSphere(player.references.playerHitbox.transform.position + Vector3.down * groundCheckDistance, groundCheckSphereRadius);
+        public bool IsGrounded => 
+            Physics.CheckSphere(
+                player.transform.position + Vector3.down * groundCheckDistance, 
+                groundCheckSphereRadius,
+                ~(1 << player.gameObject.layer) // Bitmask shenaningans, godfuckingdamnit
+            );
 
         internal void FixedUpdate()
         {

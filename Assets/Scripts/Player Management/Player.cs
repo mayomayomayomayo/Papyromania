@@ -10,7 +10,7 @@ public sealed class Player : MonoBehaviour
     public References references;
     public Movement movement;
 
-    public PlayerInputActions input;
+    public static PlayerInputActions input;
 
     private void Awake()
     {
@@ -89,12 +89,12 @@ public sealed class Player : MonoBehaviour
 
         private void TrackCameraYRotation()
         {
-            player.references.playerHitbox.transform.rotation = Quaternion.Euler(0f, player.references.playerCamera.transform.eulerAngles.y, 0f);
+            player.transform.rotation = Quaternion.Euler(0f, player.references.playerCamera.transform.eulerAngles.y, 0f);
         }
 
         private void ProcessPlayerMovement()
         {
-            Vector2 movementInput = player.input.Player.Movement.ReadValue<Vector2>();
+            Vector2 movementInput = input.Player.Movement.ReadValue<Vector2>();
 
             Vector3 forward = player.references.playerCamera.transform.forward;
             Vector3 right = player.references.playerCamera.transform.right;
@@ -146,7 +146,7 @@ public sealed class Player : MonoBehaviour
 
             Rigidbody rb = player.references.playerRigidbody;
 
-            Vector2 moveInput = player.input.Player.Movement.ReadValue<Vector2>();
+            Vector2 moveInput = input.Player.Movement.ReadValue<Vector2>();
             Vector3 forward = rb.transform.forward;
             Vector3 right = rb.transform.right;
 
@@ -168,7 +168,7 @@ public sealed class Player : MonoBehaviour
         {
             while (!IsGrounded)
             {
-                if (player.input.Player.Dash.ReadValue<float>() > 0f)
+                if (input.Player.Dash.ReadValue<float>() > 0f)
                 {
                     slamCoroutine = null;
                     yield break;
@@ -183,16 +183,16 @@ public sealed class Player : MonoBehaviour
 
         internal void EnableMovementActions()
         {
-            player.input.Player.Jump.performed += OnJumpPerformed;
-            player.input.Player.Dash.performed += OnDashPerformed;
-            player.input.Player.Slam.performed += OnSlamPerformed;
+            input.Player.Jump.performed += OnJumpPerformed;
+            input.Player.Dash.performed += OnDashPerformed;
+            input.Player.Slam.performed += OnSlamPerformed;
         }
 
         internal void DisableMovementActions()
         {
-            player.input.Player.Jump.performed -= OnJumpPerformed;
-            player.input.Player.Dash.performed -= OnDashPerformed;
-            player.input.Player.Slam.performed -= OnSlamPerformed;
+            input.Player.Jump.performed -= OnJumpPerformed;
+            input.Player.Dash.performed -= OnDashPerformed;
+            input.Player.Slam.performed -= OnSlamPerformed;
         }
     }
 }

@@ -76,6 +76,7 @@ public class CardObject : MonoBehaviour, ICardObject
         do oID = UnityEngine.Random.Range(0, int.MaxValue);
         while (Cards.objectIDsInUse.Contains(oID));
         ObjectID = oID;
+        Cards.objectIDsInUse.Add(ObjectID);
 
         cardType = data.type.ParseCardType();
         cardName = data.name;
@@ -94,8 +95,6 @@ public class CardObject : MonoBehaviour, ICardObject
         GetReferences();
 
         UpdateObjectValues();
-
-        Debug.Log(Cards.objectIDsInUse.Count);
     }
 
     public virtual void GetReferences()

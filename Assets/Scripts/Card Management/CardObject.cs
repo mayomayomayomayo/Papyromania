@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class CardObject : MonoBehaviour, ICardObject
 {
@@ -42,7 +43,7 @@ public class CardObject : MonoBehaviour, ICardObject
 
     [Header("Meta")]
     public CardModifiers cardModifiers = CardModifiers.None;
-    public CardState cardState = CardState.Dropped; // Initialize it at that for now..
+    public CardState cardState = CardState.Dropped;
     public int ObjectID { get; private set; }
 
     [Header("References")]
@@ -55,6 +56,7 @@ public class CardObject : MonoBehaviour, ICardObject
     public BoxCollider cardCollider;
     public CardPositionManager cardPositionManager;
 
+    private List<CardObject> playerHand;
 
     public virtual void OnPlay() => Debug.Log($"{cardName} was played."); 
 
@@ -62,12 +64,16 @@ public class CardObject : MonoBehaviour, ICardObject
 
     public virtual void OnTriggerEnter(Collider other)
     {
-        if (cardState == CardState.Dropped && other.CompareTag("Player"))
-        {
-            cardState = CardState.InHand;
-            cardPositionManager.OnPickup(other.gameObject);
-            cardCollider.enabled = false;
-        }
+        if (cardState == CardState.Dropped && other.CompareTag("Player")) Pickup(other.gameObject);
+    }
+
+    private void Pickup(GameObject other)
+    {
+        playerHand = other.GetComponent<Player>().hand.handList;
+        cardState = CardState.InHand;
+        cardPositionManager.OnPickup(other);
+        playerHand.Add(this);
+        cardCollider.enabled = false;
     }
 
     public virtual void InitializeValues(CardData data) 

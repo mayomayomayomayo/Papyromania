@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,7 @@ public sealed class Player : MonoBehaviour
 {
     public References references;
     public Movement movement;
+    public Hand hand;
 
     public static PlayerInputActions input;
 
@@ -197,5 +199,15 @@ public sealed class Player : MonoBehaviour
             input.Player.Dash.performed -= OnDashPerformed;
             input.Player.Slam.performed -= OnSlamPerformed;
         }
+    }
+
+    [Serializable]
+    public class Hand
+    {
+        [Header("Hand stats")]
+        public int maxHandSize;
+        
+        [Header("Hand")]
+        public List<CardObject> handList;
     }
 }

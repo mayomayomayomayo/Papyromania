@@ -35,6 +35,16 @@
             "mods": ["NonUsable"],
             "leftFieldText": "AMM:",
             "rightFieldText": "QTY:"
+        }, 
+        {
+            "type": "Consumable",
+            "name": "Consumable Card Test",
+            "description": "Test",
+            "pathToSprite": "Sprites/Ammunition",
+            "mods": ["NonUsable", "AutoDiscardOnEmpty"],
+            "leftFieldText": "SIX",
+            "rightFieldText": "SEVN",
+            "damage": "This should simply not parse?"
         }
     ]
 }

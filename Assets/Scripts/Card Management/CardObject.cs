@@ -95,6 +95,8 @@ public class CardObject : MonoBehaviour, ICardObject
         GetReferences();
 
         UpdateObjectValues();
+
+        gameObject.name = data.name;
     }
 
     public virtual void GetReferences()

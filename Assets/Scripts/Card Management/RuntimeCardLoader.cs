@@ -28,7 +28,6 @@ public class CardData
     public string description;
     public string pathToSprite;
     public string[] mods;
-    public int id;
 
     [Header("Format")]
     public string leftFieldText;
@@ -37,6 +36,8 @@ public class CardData
     [Header("GunCardObject")]
     public float damage;
     public int ammo;
+    public bool isFullAuto = false;
+    public float shotDelay = 0.5f;
 }
 
 [Serializable] // This... really doesn't warrant its own class but okay.

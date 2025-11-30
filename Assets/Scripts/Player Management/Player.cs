@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 // Welcome to hell
+// Uh i'm not too sure it's good practice to have everything in one class :/
 
 public sealed class Player : MonoBehaviour
 {
@@ -28,13 +30,15 @@ public sealed class Player : MonoBehaviour
     private void OnEnable()
     {
         input.Player.Enable();
-        movement.EnableMovementActions();
+        movement.SubscribeActions();
+        hand.SubscribeActions();
     }
 
     private void OnDisable()
     {
         input.Player.Disable();
-        movement.DisableMovementActions();
+        movement.UnsubscribeActions();
+        hand.UnsubscribeActions();
     }
 
     [Serializable]
@@ -186,14 +190,14 @@ public sealed class Player : MonoBehaviour
             slamCoroutine = null;
         }
 
-        internal void EnableMovementActions()
+        internal void SubscribeActions()
         {
             input.Player.Jump.performed += OnJumpPerformed;
             input.Player.Dash.performed += OnDashPerformed;
             input.Player.Slam.performed += OnSlamPerformed;
         }
 
-        internal void DisableMovementActions()
+        internal void UnsubscribeActions()
         {
             input.Player.Jump.performed -= OnJumpPerformed;
             input.Player.Dash.performed -= OnDashPerformed;
@@ -208,6 +212,33 @@ public sealed class Player : MonoBehaviour
         public int maxHandSize;
         
         [Header("Hand")]
-        public List<CardObject> handList;
+        public List<CardObject> handList = new();
+        public CardObject currentCard;
+        
+        internal void OnUsePerformed(InputAction.CallbackContext ctx)
+        {
+            currentCard = handList[0]; // Temporary assignment to check if the use logic, uh, logicates
+
+            if ((currentCard.cardModifiers & (CardObject.CardModifiers.NonUsable | CardObject.CardModifiers.NonUsablePrimary)) == 0) 
+            currentCard.OnPlay();
+        }
+
+        internal void OnSecondaryUsePerformed(InputAction.CallbackContext ctx)
+        {
+            if ((currentCard.cardModifiers & (CardObject.CardModifiers.NonUsable | CardObject.CardModifiers.NonUsableSecondary)) == 0)
+            currentCard.OnSecondaryPlay();
+        }
+        
+        internal void SubscribeActions()
+        {
+            input.Player.Use.performed += OnUsePerformed;
+            input.Player.SecondaryUse.performed += OnSecondaryUsePerformed;
+        }
+
+        internal void UnsubscribeActions()
+        {
+            input.Player.Use.performed -= OnUsePerformed;
+            input.Player.SecondaryUse.performed -= OnSecondaryUsePerformed;
+        }
     }
 }

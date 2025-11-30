@@ -7,7 +7,9 @@
             "damage": 20,
             "ammo": 12,
             "pathToSprite": "Sprites/Glock_77",
-            "mods": []
+            "mods": [],
+            "isFullAuto": true,
+            "shotDelay": 0.1
         },
         {
             "type": "Gun",

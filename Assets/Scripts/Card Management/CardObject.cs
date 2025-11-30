@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 using System.Collections.Generic;
 
 public class CardObject : MonoBehaviour, ICardObject
@@ -28,6 +29,8 @@ public class CardObject : MonoBehaviour, ICardObject
         NonNaturallyDroppable = 1 << 2,
         AutoDiscardOnEmpty = 1 << 3,
         NonDiscardable = 1 << 4,
+        NonUsablePrimary = 1 << 5,
+        NonUsableSecondary = 1 << 6,
     }
 
     [Header("Definition")]
@@ -60,6 +63,8 @@ public class CardObject : MonoBehaviour, ICardObject
 
     public virtual void OnPlay() => Debug.Log($"{cardName} was played."); 
 
+    public virtual void OnSecondaryPlay() => Debug.Log($"{cardName} was secondary-played.");
+
     public virtual void OnDiscard() => Debug.Log($"{cardName} was discarded."); 
 
     public virtual void OnTriggerEnter(Collider other)
@@ -69,7 +74,7 @@ public class CardObject : MonoBehaviour, ICardObject
 
     private void Pickup(GameObject other)
     {
-        playerHand = other.GetComponent<Player>().hand.handList;
+        playerHand ??= other.GetComponent<Player>().hand.handList;
         cardState = CardState.InHand;
         cardPositionManager.OnPickup(other);
         playerHand.Add(this);
@@ -136,11 +141,17 @@ public class GunCardObject : CardObject
     public float damageValue;
     public int ammunition;
 
+    [Header("Behaviour")]
+    public bool isFullAuto;
+    public float shotDelay;
+
     public override void InitializeValues(CardData data)
     {
         base.InitializeValues(data);
         damageValue = data.damage;
         ammunition = data.ammo;
+        isFullAuto = data.isFullAuto;
+        shotDelay = data.shotDelay;
     }
 
     public override void UpdateObjectValues()

@@ -26,11 +26,6 @@ public sealed class Player : MonoBehaviour
         movement.FixedUpdate();
     }
 
-    private void OnDrawGizmos()
-    {
-        Debug.DrawRay(references.playerCamera.transform.position, references.playerCamera.transform.forward * Mathf.Infinity, Color.red);
-    }
-
     private void OnEnable()
     {
         input.Player.Enable();

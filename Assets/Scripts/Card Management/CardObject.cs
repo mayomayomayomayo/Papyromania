@@ -191,8 +191,9 @@ public class GunCardObject : CardObject
     {
         if (Physics.Raycast(
             player.references.playerCamera.transform.position,
-            player.references.playerCamera.transform.forward * shotRange,
-            out RaycastHit hit))
+            player.references.playerCamera.transform.forward,
+            out RaycastHit hit,
+            shotRange))
         {
             Debug.Log(hit.collider.name);
         }

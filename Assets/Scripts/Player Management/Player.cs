@@ -26,6 +26,11 @@ public sealed class Player : MonoBehaviour
         movement.FixedUpdate();
     }
 
+    private void OnDrawGizmos()
+    {
+        Debug.DrawRay(references.playerCamera.transform.position, references.playerCamera.transform.forward * Mathf.Infinity, Color.red);
+    }
+
     private void OnEnable()
     {
         input.Player.Enable();
@@ -209,6 +214,8 @@ public sealed class Player : MonoBehaviour
     {
         [Header("Hand stats")]
         public int maxHandSize;
+
+        [Header("Hand visuals")]
         
         [Header("Hand")]
         public List<CardObject> handList = new();
@@ -216,7 +223,7 @@ public sealed class Player : MonoBehaviour
         
         internal void OnUsePerformed(InputAction.CallbackContext ctx)
         {
-            currentCard = handList[^1]; // Temporary assignment to check if the use logic, uh, logicates
+            if (currentCard == null) return;
 
             if ((currentCard.cardModifiers & (CardObject.CardModifiers.NonUsable | CardObject.CardModifiers.NonUsablePrimary)) == 0) 
             currentCard.OnPlay();
@@ -224,20 +231,41 @@ public sealed class Player : MonoBehaviour
 
         internal void OnSecondaryUsePerformed(InputAction.CallbackContext ctx)
         {
+            if (currentCard == null) return;
+
             if ((currentCard.cardModifiers & (CardObject.CardModifiers.NonUsable | CardObject.CardModifiers.NonUsableSecondary)) == 0)
             currentCard.OnSecondaryPlay();
+        }
+
+        internal void OnDiscardPerformed(InputAction.CallbackContext ctx)
+        {
+            Debug.Log($"discarded {(currentCard != null ? currentCard.cardName : "something probaby")}");
         }
         
         internal void SubscribeActions()
         {
             input.Player.Use.performed += OnUsePerformed;
             input.Player.SecondaryUse.performed += OnSecondaryUsePerformed;
+            input.Player.Discard.performed += OnDiscardPerformed;
+
+            input.Player.Jump.performed += _ => currentCard = handList[^1]; // DEBUG
         }
 
         internal void UnsubscribeActions()
         {
             input.Player.Use.performed -= OnUsePerformed;
             input.Player.SecondaryUse.performed -= OnSecondaryUsePerformed;
+            input.Player.Discard.performed -= OnDiscardPerformed;
+        }
+    
+        internal void UpdateHandLayout()
+        {
+            foreach (CardObject card in handList)
+            {
+                if (card == currentCard) continue;
+
+                Debug.Log($"Card examined: {card.cardName}"); // TODO implement this
+            }
         }
     }
 }

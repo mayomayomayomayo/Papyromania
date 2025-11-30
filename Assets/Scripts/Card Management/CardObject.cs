@@ -61,6 +61,7 @@ public class CardObject : MonoBehaviour, ICardObject
     public Image artImage;
     public BoxCollider cardCollider;
     public CardPositionManager cardPositionManager;
+    public Player player;
 
     private List<CardObject> playerHand;
 
@@ -77,7 +78,8 @@ public class CardObject : MonoBehaviour, ICardObject
 
     private void Pickup(GameObject other)
     {
-        playerHand ??= other.GetComponent<Player>().hand.handList;
+        player = other.GetComponent<Player>();
+        playerHand ??= player.hand.handList;
         cardState = CardState.InHand;
         cardPositionManager.OnPickup(other);
         playerHand.Add(this);
@@ -86,6 +88,11 @@ public class CardObject : MonoBehaviour, ICardObject
 
     public virtual void InitializeValues(CardData data) 
     {
+        if (!string.IsNullOrWhiteSpace(data.customBehaviour) && ModLoader.knownCustomCardBehaviours.TryGetValue(data.customBehaviour, out Type type))
+        {
+            customBehaviour = (CustomCardBehaviour)gameObject.AddComponent(type); 
+        }
+        
         int oID;
         do oID = UnityEngine.Random.Range(0, int.MaxValue);
         while (Cards.objectIDsInUse.Contains(oID));
@@ -145,6 +152,7 @@ public class GunCardObject : CardObject
     public int ammunition;
     public bool isFullAuto;
     public float shotDelay;
+    public float shotRange;
 
     public override void InitializeValues(CardData data)
     {
@@ -152,7 +160,8 @@ public class GunCardObject : CardObject
         damageValue = data.damage;
         ammunition = data.ammo;
         isFullAuto = data.isFullAuto;
-        shotDelay = data.shotDelay != 0 ? data.shotDelay : 0.5f;
+        shotDelay = data.shotDelay != 0f ? data.shotDelay : 0.5f;
+        shotRange = data.shotRange != 0f ? data.shotRange : Mathf.Infinity;
     }
 
     public override void UpdateObjectValues()
@@ -164,12 +173,29 @@ public class GunCardObject : CardObject
 
     public override void OnPlay()
     {
-        Debug.Log($"Gun {cardName} was fired! (aiming : {(int)Player.input.Player.SecondaryUse.ReadValue<float>()})");
+        if (customBehaviour != null)
+        {
+            customBehaviour.OnUse();
+            return;
+        }
+
+        DefaultShoot();
     }
 
     public override void OnSecondaryPlay()
     {
         Debug.Log($"Gun {cardName} is being aimed...");
+    }
+
+    private void DefaultShoot()
+    {
+        if (Physics.Raycast(
+            player.references.playerCamera.transform.position,
+            player.references.playerCamera.transform.forward * shotRange,
+            out RaycastHit hit))
+        {
+            Debug.Log(hit.collider.name);
+        }
     }
 }
 

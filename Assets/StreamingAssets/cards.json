@@ -46,7 +46,8 @@
             "mods": ["NonUsable", "AutoDiscardOnEmpty"],
             "leftFieldText": "SIX",
             "rightFieldText": "SEVN",
-            "damage": "This should simply not parse?"
+            "damage": "This should simply not parse?",
+            "customBehaviour": "ShouldntParseBehaviour"
         }
     ]
 }

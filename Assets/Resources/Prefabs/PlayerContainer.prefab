@@ -297,6 +297,10 @@ MonoBehaviour:
     slamFallSpeed: 5000
     groundCheckDistance: 1.2
     groundCheckSphereRadius: 0.2
+  hand:
+    maxHandSize: 0
+    handList: []
+    currentCard: {fileID: 0}
 --- !u!136 &5175677346158157263
 CapsuleCollider:
   m_ObjectHideFlags: 0

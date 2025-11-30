@@ -38,8 +38,9 @@ public class CardData
     [Header("GunCardObject")]
     public float damage;
     public int ammo;
-    public bool isFullAuto = false;
-    public float shotDelay = 0.5f;
+    public bool isFullAuto;
+    public float shotDelay;
+    public float shotRange;
 }
 
 [Serializable] // This... really doesn't warrant its own class but okay.

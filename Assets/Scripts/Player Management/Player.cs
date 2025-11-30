@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -217,7 +216,7 @@ public sealed class Player : MonoBehaviour
         
         internal void OnUsePerformed(InputAction.CallbackContext ctx)
         {
-            currentCard = handList[0]; // Temporary assignment to check if the use logic, uh, logicates
+            currentCard = handList[^1]; // Temporary assignment to check if the use logic, uh, logicates
 
             if ((currentCard.cardModifiers & (CardObject.CardModifiers.NonUsable | CardObject.CardModifiers.NonUsablePrimary)) == 0) 
             currentCard.OnPlay();

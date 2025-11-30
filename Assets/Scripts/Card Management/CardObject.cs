@@ -2,9 +2,9 @@ using UnityEngine;
 using System;
 using TMPro;
 using UnityEngine.UI;
-using System.Collections;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(BoxCollider))]
 public class CardObject : MonoBehaviour, ICardObject
 {
     public enum CardType
@@ -48,6 +48,9 @@ public class CardObject : MonoBehaviour, ICardObject
     public CardModifiers cardModifiers = CardModifiers.None;
     public CardState cardState = CardState.Dropped;
     public int ObjectID { get; private set; }
+
+    [Header("Behaviour")]
+    public CustomCardBehaviour customBehaviour;
 
     [Header("References")]
     public TMP_Text nameField;
@@ -140,8 +143,6 @@ public class GunCardObject : CardObject
     [Header("Values")]
     public float damageValue;
     public int ammunition;
-
-    [Header("Behaviour")]
     public bool isFullAuto;
     public float shotDelay;
 
@@ -151,7 +152,7 @@ public class GunCardObject : CardObject
         damageValue = data.damage;
         ammunition = data.ammo;
         isFullAuto = data.isFullAuto;
-        shotDelay = data.shotDelay;
+        shotDelay = data.shotDelay != 0 ? data.shotDelay : 0.5f;
     }
 
     public override void UpdateObjectValues()
@@ -159,6 +160,16 @@ public class GunCardObject : CardObject
         base.UpdateObjectValues();
         leftField.text = $"{cardLeftFieldText ??= "ATK:"} {damageValue}";
         rightField.text = $"{cardRightFieldText ??= "AMM:"} {ammunition}";
+    }
+
+    public override void OnPlay()
+    {
+        Debug.Log($"Gun {cardName} was fired! (aiming : {(int)Player.input.Player.SecondaryUse.ReadValue<float>()})");
+    }
+
+    public override void OnSecondaryPlay()
+    {
+        Debug.Log($"Gun {cardName} is being aimed...");
     }
 }
 

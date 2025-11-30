@@ -9,7 +9,6 @@ public static class PathManager
 
     public static float currentPathOrientation;
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void LoadAllSegments()
     {
         Random.InitState(12345);

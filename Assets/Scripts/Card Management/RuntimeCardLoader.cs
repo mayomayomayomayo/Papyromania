@@ -6,7 +6,6 @@ public static class RuntimeCardLoader
 {
     public static CardData[] rawCards;
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void LoadCardsFromJson()
     {
         rawCards = Array.Empty<CardData>();
@@ -32,6 +31,9 @@ public class CardData
     [Header("Format")]
     public string leftFieldText;
     public string rightFieldText;
+
+    [Header("Behaviour")]
+    public string customBehaviour;
 
     [Header("GunCardObject")]
     public float damage;

@@ -19,7 +19,7 @@ public class CardPositionManager : MonoBehaviour
     public void OnPickup(GameObject player)
     {
         // uNItY oBJEctS shOuLd NOt uSE nUll CoAlEscIng
-        playerHandAnchor = playerHandAnchor != null ? playerHandAnchor : player.GetComponent<Player>().references.playerHandAnchor.transform;
+        playerHandAnchor = playerHandAnchor != null ? playerHandAnchor : player.GetComponent<Player>().playerHandAnchor.transform;
 
         this.KillCoroutine(ref movingCr);
         StartCoroutine(GoToAndParent(transform, playerHandAnchor));

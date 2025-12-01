@@ -190,8 +190,8 @@ public class GunCardObject : CardObject
     private void DefaultShoot()
     {
         if (Physics.Raycast(
-            player.references.playerCamera.transform.position,
-            player.references.playerCamera.transform.forward,
+            player.playerCamera.transform.position,
+            player.playerCamera.transform.forward,
             out RaycastHit hit,
             shotRange))
         {

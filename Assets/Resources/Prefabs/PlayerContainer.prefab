@@ -58,7 +58,7 @@ Transform:
   m_GameObject: {fileID: 842419259104619783}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.9900003, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -92,8 +92,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2091919929544345030}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.059223726, y: -0.011523194, z: -0.00068369217, w: 0.998178}
-  m_LocalPosition: {x: 0, y: 0.9900003, z: 0}
+  m_LocalRotation: {x: -0.4028581, y: 0.58308905, z: 0.40828335, w: 0.575341}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -246,7 +246,9 @@ GameObject:
   - component: {fileID: 2806040483122118885}
   - component: {fileID: 5175677346158157263}
   - component: {fileID: 7503625688886015631}
-  m_Layer: 0
+  - component: {fileID: 6884542324280510736}
+  - component: {fileID: 3983973272719745371}
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -282,25 +284,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db379f39b6cd7074c8ae02b7a60cf405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  references:
-    player: {fileID: 0}
-    playerHandAnchor: {fileID: 7543057845778770997}
-    playerCamera: {fileID: 915159069525996557}
-    playerRigidbody: {fileID: 7503625688886015631}
-  movement:
-    movementSpeed: 25
-    acceleration: 0.15
-    jumpForce: 7
-    jumpCooldown: 0.1
-    dashForce: 125
-    dashCooldown: 0.5
-    slamFallSpeed: 5000
-    groundCheckDistance: 1.2
-    groundCheckSphereRadius: 0.2
-  hand:
-    maxHandSize: 0
-    handList: []
-    currentCard: {fileID: 0}
+  playerHandAnchor: {fileID: 7543057845778770997}
+  playerCamera: {fileID: 915159069525996557}
+  playerRigidbody: {fileID: 7503625688886015631}
+  hand: {fileID: 3983973272719745371}
 --- !u!136 &5175677346158157263
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -351,6 +338,43 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 80
   m_CollisionDetection: 2
+--- !u!114 &6884542324280510736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384048623393635476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37d557ca4042e644283a1eaf48520124, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSpeed: 35
+  acceleration: 0.2
+  jumpForce: 7
+  jumpCooldown: 0.1
+  dashForce: 150
+  dashCooldown: 0.5
+  hasDash: 0
+  slamFallSpeed: 5000
+  groundCheckDistance: 0
+  groundCheckSphereRadius: 0.1
+--- !u!114 &3983973272719745371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384048623393635476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e84c2bcb6ad8e445afbfdd6b8e77d46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHandSize: 7
+  handList: []
+  currentCard: {fileID: 0}
 --- !u!1 &7543057845778770997
 GameObject:
   m_ObjectHideFlags: 0
@@ -412,14 +436,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8949518919502819448}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.059223726, y: -0.011523194, z: -0.00068369217, w: 0.998178}
-  m_LocalPosition: {x: 0, y: 0.9900003, z: 0}
+  m_LocalRotation: {x: -0.4028581, y: 0.58308905, z: 0.40828335, w: 0.575341}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6119491206870901436}
   m_Father: {fileID: 8265711683795251022}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -70, y: 0, z: 0}
 --- !u!20 &915159069525996557
 Camera:
   m_ObjectHideFlags: 0
@@ -542,7 +566,7 @@ MonoBehaviour:
   ReferenceFrame: 0
   RecenterTarget: 0
   PanAxis:
-    Value: -1.3228122
+    Value: 90.766426
     Center: 0
     Range: {x: -180, y: 180}
     Wrap: 1
@@ -552,7 +576,7 @@ MonoBehaviour:
       Time: 2
     Restrictions: 0
   TiltAxis:
-    Value: -6.7909656
+    Value: -70
     Center: 0
     Range: {x: -70, y: 70}
     Wrap: 0

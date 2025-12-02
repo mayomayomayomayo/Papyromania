@@ -1,6 +1,5 @@
 using UnityEngine; 
 using UnityEngine.InputSystem;
-using System.Collections.Generic;
 
 [RequireComponent(typeof(Player))]
 public class Hand : MonoBehaviour
@@ -9,7 +8,7 @@ public class Hand : MonoBehaviour
     public int maxHandSize;
     
     [Header("Hand")]
-    public List<CardObject> handList = new();
+    public CardStructure hand = new();
     public CardObject currentCard;
 
     private Player player;
@@ -64,7 +63,7 @@ public class Hand : MonoBehaviour
 
     internal void UpdateHandLayout()
     {
-        foreach (CardObject card in handList)
+        foreach (CardObject card in hand.cards)
         {
             if (card == currentCard) continue;
             Debug.Log($"Card examined: {card.cardName}"); // TODO implement this

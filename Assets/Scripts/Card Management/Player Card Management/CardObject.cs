@@ -63,7 +63,7 @@ public class CardObject : MonoBehaviour, ICardObject
     public CardPositionManager cardPositionManager;
     public Player player;
 
-    private List<CardObject> playerHand;
+    private CardStructure playerHand;
 
     public virtual void OnPlay() => Debug.Log($"{cardName} was played."); 
 
@@ -79,11 +79,13 @@ public class CardObject : MonoBehaviour, ICardObject
     private void Pickup(GameObject other)
     {
         player = other.GetComponent<Player>();
-        playerHand ??= player.hand.handList;
+        playerHand ??= player.hand.hand;
         cardState = CardState.InHand;
         cardPositionManager.OnPickup(other);
-        playerHand.Add(this);
+        playerHand.cards.Add(this);
         cardCollider.enabled = false;
+
+        Debug.Log(playerHand.cards.Count);
     }
 
     public virtual void InitializeValues(CardData data) 

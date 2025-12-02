@@ -54,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
             );
     }
 
-    internal void FixedUpdate()
+    private void FixedUpdate()
     {
         TrackCameraYRotation();
         ProcessPlayerMovement();

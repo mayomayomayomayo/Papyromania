@@ -3,6 +3,8 @@ using System.Collections.Generic;
 public static class Cards
 {
     public static List<int> objectIDsInUse;
+    
+    public static Dictionary<string, CardObject> cards = new();
 
     public static void Load(CardData[] raw)
     {
@@ -11,8 +13,6 @@ public static class Cards
         
         foreach (CardData cd in raw) Add(CardMaker.NewCardCanvas().InitializeCard(cd));
     }
-    
-    public static Dictionary<string, CardObject> cards = new();
 
     public static void Add(CardObject c) => cards[c.cardName] = c;    
 

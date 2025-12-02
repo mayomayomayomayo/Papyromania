@@ -63,7 +63,7 @@ public class CardObject : MonoBehaviour, ICardObject
     public CardPositionManager cardPositionManager;
     public Player player;
 
-    private CardStructure playerHand;
+    private Hand playerHand;
 
     public virtual void OnPlay() => Debug.Log($"{cardName} was played."); 
 
@@ -74,18 +74,6 @@ public class CardObject : MonoBehaviour, ICardObject
     public virtual void OnTriggerEnter(Collider other)
     {
         if (cardState == CardState.Dropped && other.CompareTag("Player")) Pickup(other.gameObject);
-    }
-
-    private void Pickup(GameObject other)
-    {
-        player = other.GetComponent<Player>();
-        playerHand ??= player.hand.hand;
-        cardState = CardState.InHand;
-        cardPositionManager.OnPickup(other);
-        playerHand.cards.Add(this);
-        cardCollider.enabled = false;
-
-        Debug.Log(playerHand.cards.Count);
     }
 
     public virtual void InitializeValues(CardData data) 
@@ -144,6 +132,18 @@ public class CardObject : MonoBehaviour, ICardObject
         artImage.sprite = cardArt;
         nameField.text = cardName;
         descriptionField.text = cardDescription;
+    }
+
+    private void Pickup(GameObject other)
+    {
+        player = other.GetComponent<Player>();
+        playerHand = player.hand;
+        
+        cardState = CardState.InHand;
+        cardPositionManager.OnPickup(other);
+        playerHand.hand.AddCard(this);
+        playerHand.UpdateHandLayout();
+        cardCollider.enabled = false;
     }
 }
 

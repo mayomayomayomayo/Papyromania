@@ -680,9 +680,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37f7a470e9acb524da53906ef2cbb287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Instance: {fileID: 0}
-  mainPlayer: {fileID: 0}
-  randomSeed: 12345
 --- !u!4 &1191773404
 Transform:
   m_ObjectHideFlags: 0
@@ -1004,34 +1001,6 @@ PrefabInstance:
     - target: {fileID: 326144226389917500, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
       propertyPath: m_Name
       value: PlayerContainer
-      objectReference: {fileID: 0}
-    - target: {fileID: 2216474486090092804, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
-      propertyPath: IgnoreTimeScale
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4986168058424104453, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.575341
-      objectReference: {fileID: 0}
-    - target: {fileID: 4986168058424104453, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.4028581
-      objectReference: {fileID: 0}
-    - target: {fileID: 4986168058424104453, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.58308905
-      objectReference: {fileID: 0}
-    - target: {fileID: 4986168058424104453, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.40828335
-      objectReference: {fileID: 0}
-    - target: {fileID: 4986168058424104453, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -69.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4986168058424104453, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90.766
       objectReference: {fileID: 0}
     - target: {fileID: 8265711683795251022, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
       propertyPath: m_LocalPosition.x

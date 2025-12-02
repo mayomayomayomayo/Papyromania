@@ -5,6 +5,8 @@ public class CardStructure
 {
     public List<CardObject> cards = new();
 
+    public Action<CardObject> onAddCard;
+
     public virtual int FindIndex(CardObject card)
     {
         for (int i = 0; i < cards.Count; i++)
@@ -12,6 +14,12 @@ public class CardStructure
             if (cards[i].ObjectID == card.ObjectID) return i;
         }
         throw new Exception("Index not found");
+    }
+
+    public virtual void AddCard(CardObject card)
+    {
+        cards.Add(card);
+        onAddCard.Invoke(card);
     }
 
     public virtual int FindIndex(string match)

@@ -13,20 +13,11 @@ public class Hand : MonoBehaviour
 
     private Player player;
 
-    private void Awake()
-    {
-        player = GetComponent<Player>();
-    }
+    private void Awake() => player = GetComponent<Player>();
 
-    private void OnEnable()
-    {
-        SubscribeActions();
-    }
+    private void OnEnable() => SubscribeActions();
 
-    private void OnDisable()
-    {
-        UnsubscribeActions();
-    }
+    private void OnDisable() => UnsubscribeActions();
     
     internal void OnUsePerformed(InputAction.CallbackContext ctx)
     {
@@ -47,11 +38,19 @@ public class Hand : MonoBehaviour
         Debug.Log($"discarded {(currentCard != null ? currentCard.cardName : "something probaby")}");
     }
     
+    internal void OnCardAdded(CardObject card)
+    {
+        if (currentCard == null) currentCard = card;
+        Debug.Log(currentCard == null);
+        UpdateHandLayout();
+    }
+
     internal void SubscribeActions()
     {
         player.input.Player.Use.performed += OnUsePerformed;
         player.input.Player.SecondaryUse.performed += OnSecondaryUsePerformed;
         player.input.Player.Discard.performed += OnDiscardPerformed;
+        hand.onAddCard += OnCardAdded;
     }
 
     internal void UnsubscribeActions()
@@ -59,14 +58,14 @@ public class Hand : MonoBehaviour
         player.input.Player.Use.performed -= OnUsePerformed;
         player.input.Player.SecondaryUse.performed -= OnSecondaryUsePerformed;
         player.input.Player.Discard.performed -= OnDiscardPerformed;
+        hand.onAddCard -= OnCardAdded;
     }
 
-    internal void UpdateHandLayout()
+    public void UpdateHandLayout()
     {
         foreach (CardObject card in hand.cards)
         {
-            if (card == currentCard) continue;
-            Debug.Log($"Card examined: {card.cardName}"); // TODO implement this
+            if (card != currentCard) card.gameObject.SetActive(false);
         }
     }
 }

@@ -21,16 +21,16 @@ public class CardObject : MonoBehaviour, ICardObject
     }
 
     [Flags]
-    public enum CardModifiers : long
+    public enum CardModifiers
     {
-        None = 0L,
-        NonReloadable = 1L << 0,
-        NonUsable = 1L << 1,
-        NonNaturallyDroppable = 1L << 2,
-        AutoDiscardOnEmpty = 1L << 3,
-        NonDiscardable = 1L << 4,
-        NonUsablePrimary = 1L << 5,
-        NonUsableSecondary = 1L << 6,
+        None = 0,
+        NonReloadable = 1 << 0,
+        NonUsable = 1 << 1,
+        NonNaturallyDroppable = 1 << 2,
+        AutoDiscardOnEmpty = 1 << 3,
+        NonDiscardable = 1 << 4,
+        NonUsablePrimary = 1 << 5,
+        NonUsableSecondary = 1 << 6,
     }
 
     [Header("Definition")]
@@ -139,11 +139,11 @@ public class CardObject : MonoBehaviour, ICardObject
         player = other.GetComponent<Player>();
         playerHand = player.hand;
         
+        cardCollider.enabled = false;
         cardState = CardState.InHand;
         cardPositionManager.OnPickup(other);
-        playerHand.hand.AddCard(this);
+        playerHand.cards.AddCard(this);
         playerHand.UpdateHandLayout();
-        cardCollider.enabled = false;
     }
 }
 

@@ -8,5 +8,10 @@ public static class AppStart
         ModLoader.LoadAllMods();
         Cards.Load();
         PathManager.LoadAllSegments();
+
+        foreach (CardDefinition cd in Cards.cards)
+        {
+            Cards.CreateCard(cd);
+        }
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 public sealed class Player : MonoBehaviour
 {
     [Header("References")]
-    public GameObject playerHandAnchor;
+    public Transform playerHandAnchor;
     public Camera playerCamera;
     public Rigidbody playerRigidbody;
     public Hand hand;

@@ -29,7 +29,7 @@ public class CardStructure
     {
         for (int i = 0; i < cards.Count; i++)
         {
-            if (cards[i].data.name == match) return i;
+            if (cards[i].definition.name == match) return i;
         }
         throw new Exception("Index not found");
     }
@@ -40,7 +40,7 @@ public class CardStructure
 
         for (int i = 0; i < cards.Count; i++)
         {
-            if (cards[i].data.name == match) indexes.Add(i);
+            if (cards[i].definition.name == match) indexes.Add(i);
         }
 
         return indexes;

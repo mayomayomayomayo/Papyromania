@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class CardVisuals : MonoBehaviour
 {
-    public Card card; // Figure out how to set this
+    public Card owner;
 
     [Header("Fields")]
     public TMP_Text nameField;
@@ -17,6 +17,11 @@ public class CardVisuals : MonoBehaviour
     private void Awake()
     {
         GetRefs();
+    }
+
+    private void Start()
+    {
+        UpdateValues();
     }
     
     private void GetRefs()
@@ -34,10 +39,10 @@ public class CardVisuals : MonoBehaviour
 
     public virtual void UpdateValues()
     {
-        nameField.text = card.data.name;
-        descriptionField.text = card.data.description;
-        baseImage.sprite = card.data.cardBase;
-        artImage.sprite = card.data.cardArt;
+        nameField.text = owner.definition.name;
+        descriptionField.text = owner.definition.description;
+        baseImage.sprite = owner.definition.cardBase;
+        artImage.sprite = owner.definition.cardArt;
     }
 }
 

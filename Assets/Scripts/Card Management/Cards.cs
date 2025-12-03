@@ -5,13 +5,13 @@ using UnityEngine;
 
 public static class Cards
 {
-    public static Dictionary<string, CardDefinition> byName;
-    public static Dictionary<int, CardDefinition> byID;
+    private static Dictionary<string, CardDefinition> byName;
+    public static List<CardDefinition> cards;
 
     public static void Load()
     {
         byName = new();
-        byID = new();
+        cards = new();
 
         string json = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "cards.json"));
 
@@ -20,15 +20,45 @@ public static class Cards
         for (int i = 0; i < rawCards.Length; i++)
         {
             CardData raw = rawCards[i];
-            CardDefinition card = (CardDefinition) Activator.CreateInstance(raw.type.ParseSubclass(), raw);
+            CardDefinition cd = (CardDefinition) Activator.CreateInstance(raw.type.ParseSubclass(), raw);
             
-            byID[i] = card;
-            byName[raw.name] = card;
+            cards.Add(cd);
+            byName[raw.name] = cd;
 
             Debug.Log($"Successfully loaded {raw.name}");
         }
     }
 
     public static CardDefinition Get(string match) => byName.TryGetValue(match, out CardDefinition got) ? got : null;
-    public static CardDefinition Get(int match) => byID.TryGetValue(match, out CardDefinition got) ? got : null;
+    public static CardDefinition Get(int match) => cards[match];
+
+    public static Card CreateCard(CardDefinition def, Vector3? pos = null)
+    {
+        Vector3 position = pos ?? Vector3.zero;
+
+        GameObject cardObject = CardUtils.NewCard(position);
+
+        Card card = cardObject.AddComponent<Card>();
+
+        card.definition = def;
+        card.behaviour = (CardBehaviour)cardObject.AddComponent(def.BehaviourType);
+        card.visuals = cardObject.AddComponent<CardVisuals>();
+
+        card.behaviour.owner = card;
+        card.visuals.owner = card;
+
+        return card;
+    }
+}
+
+public static class CardUtils
+{
+    private static GameObject _cardCanvasPrefab; 
+    public static GameObject CardCanvasPrefab { get { return _cardCanvasPrefab = _cardCanvasPrefab != null ? _cardCanvasPrefab : Resources.Load<GameObject>("Prefabs/CardCanvas"); } }
+
+    public static GameObject NewCard(Vector3 pos) => UnityEngine.Object.Instantiate(CardCanvasPrefab, pos, Quaternion.identity);
+
+    public static CardDefinition.CardType ParseCardType(this string typeStr) => Enum.TryParse(typeStr, true, out CardDefinition.CardType result) ? result : throw new Exception($"Couldn't parse CardType {typeStr}");
+    
+    public static Type ParseSubclass(this string typeStr) => Type.GetType($"{typeStr}CardDefinition") ?? throw new Exception($"Couldn't parse type {typeStr}");
 }

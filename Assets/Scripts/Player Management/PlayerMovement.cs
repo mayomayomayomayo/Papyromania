@@ -98,10 +98,6 @@ public class PlayerMovement : MonoBehaviour
 
     internal IEnumerator Jump()
     {
-        Hand hand = GetComponent<Hand>();
-        hand.currentCard = hand.cards.cards[Random.Range(0, hand.cards.cards.Count)];
-        hand.UpdateHandLayout();
-
         Rigidbody rb = player.playerRigidbody;
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);

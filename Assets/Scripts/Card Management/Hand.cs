@@ -27,14 +27,14 @@ public class Hand : MonoBehaviour
     internal void OnUsePerformed(InputAction.CallbackContext ctx)
     {
         if (currentCard == null) return;
-        if ((currentCard.data.modifiers & (CardDefinition.CardModifiers.NonUsable | CardDefinition.CardModifiers.NonUsablePrimary)) == 0) 
+        if ((currentCard.definition.modifiers & (CardDefinition.CardModifiers.NonUsable | CardDefinition.CardModifiers.NonUsablePrimary)) == 0) 
         currentCard.behaviour.UsePrimary();
     }
 
     internal void OnSecondaryUsePerformed(InputAction.CallbackContext ctx)
     {
         if (currentCard == null) return;
-        if ((currentCard.data.modifiers & (CardDefinition.CardModifiers.NonUsable | CardDefinition.CardModifiers.NonUsableSecondary)) == 0)
+        if ((currentCard.definition.modifiers & (CardDefinition.CardModifiers.NonUsable | CardDefinition.CardModifiers.NonUsableSecondary)) == 0)
         currentCard.behaviour.UseSecondary();
     }
 

@@ -6,7 +6,7 @@ public static class AppStart
     public static void LoadEverything()
     {
         ModLoader.LoadAllMods();
-        RuntimeCardLoader.LoadCardsFromJson();
+        Cards.Load();
         PathManager.LoadAllSegments();
     }
 }

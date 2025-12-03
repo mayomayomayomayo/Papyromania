@@ -1,22 +1,5 @@
-using UnityEngine;
-using /*Old McDonald had a*/ System. /*I-A-I-A*/ IO;
 using System;
-
-public static class RuntimeCardLoader
-{
-    public static CardData[] rawCards;
-
-    public static void LoadCardsFromJson()
-    {
-        rawCards = Array.Empty<CardData>();
-
-        string json = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "cards.json"));
-
-        rawCards = JsonUtility.FromJson<CardDataArray>(json).cards;
-
-        Cards.Load(rawCards);
-    }
-}
+using UnityEngine;
 
 [Serializable]
 public class CardData 
@@ -33,11 +16,11 @@ public class CardData
     public string rightFieldText;
 
     [Header("Behaviour")]
-    public string customBehaviour;
+    public string customBehaviourType;
 
-    [Header("GunCardObject")]
+    [Header("Gun")]
     public float damage;
-    public int ammo;
+    public int maxAmmo;
     public bool isFullAuto;
     public float shotDelay;
     public float shotRange;

@@ -19,7 +19,7 @@ public static class ModLoader
 
     public static void GetCustomCardBehaviours(Assembly mod)
     {
-        IEnumerable<Type> customCardBehaviours = mod.GetTypes().Where(t => t.IsSubclassOf(typeof(CustomCardBehaviour)) && !t.IsAbstract);
+        IEnumerable<Type> customCardBehaviours = mod.GetTypes().Where(t => t.IsSubclassOf(typeof(CardBehaviour)) && !t.IsAbstract);
 
         foreach (Type t in customCardBehaviours) knownCustomCardBehaviours[t.Name] = t;
     }

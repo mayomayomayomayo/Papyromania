@@ -5,22 +5,22 @@ using UnityEngine;
 public class CardStructure
 {
     [Header("Contents")]
-    public List<CardObject> cards = new();
+    public List<Card> cards = new();
 
     [Header("Events")]
-    public Action<CardObject> onAddCard;
+    public Action<Card> onAddCard;
     
-    public virtual void AddCard(CardObject card)
+    public virtual void AddCard(Card card)
     {
         cards.Add(card);
         onAddCard.Invoke(card);
     }
 
-    public virtual int FindIndex(CardObject card)
+    public virtual int FindIndex(Card card)
     {
         for (int i = 0; i < cards.Count; i++)
         {
-            if (cards[i].ObjectID == card.ObjectID) return i;
+            if (card == cards[i]) return i;
         }
         throw new Exception("Index not found");
     }
@@ -29,7 +29,7 @@ public class CardStructure
     {
         for (int i = 0; i < cards.Count; i++)
         {
-            if (cards[i].cardName == match) return i;
+            if (cards[i].data.name == match) return i;
         }
         throw new Exception("Index not found");
     }
@@ -40,7 +40,7 @@ public class CardStructure
 
         for (int i = 0; i < cards.Count; i++)
         {
-            if (cards[i].cardName == match) indexes.Add(i);
+            if (cards[i].data.name == match) indexes.Add(i);
         }
 
         return indexes;

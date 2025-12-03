@@ -6,10 +6,15 @@ public class Hand : MonoBehaviour
 {
     [Header("Hand stats")]
     public int maxHandSize;
+
+    [Header("Hand visuals")]
+    public float handSpread;
+    public float handRotation;
+    public float handDrop;
     
     [Header("Hand")]
-    public CardStructure hand = new();
-    public CardObject currentCard;
+    public CardStructure cards = new();
+    public Card currentCard;
 
     private Player player;
 
@@ -22,26 +27,25 @@ public class Hand : MonoBehaviour
     internal void OnUsePerformed(InputAction.CallbackContext ctx)
     {
         if (currentCard == null) return;
-        if ((currentCard.cardModifiers & (CardObject.CardModifiers.NonUsable | CardObject.CardModifiers.NonUsablePrimary)) == 0) 
-        currentCard.OnPlay();
+        if ((currentCard.data.modifiers & (CardDefinition.CardModifiers.NonUsable | CardDefinition.CardModifiers.NonUsablePrimary)) == 0) 
+        currentCard.behaviour.UsePrimary();
     }
 
     internal void OnSecondaryUsePerformed(InputAction.CallbackContext ctx)
     {
         if (currentCard == null) return;
-        if ((currentCard.cardModifiers & (CardObject.CardModifiers.NonUsable | CardObject.CardModifiers.NonUsableSecondary)) == 0)
-        currentCard.OnSecondaryPlay();
+        if ((currentCard.data.modifiers & (CardDefinition.CardModifiers.NonUsable | CardDefinition.CardModifiers.NonUsableSecondary)) == 0)
+        currentCard.behaviour.UseSecondary();
     }
 
     internal void OnDiscardPerformed(InputAction.CallbackContext ctx)
     {
-        Debug.Log($"discarded {(currentCard != null ? currentCard.cardName : "something probaby")}");
+        Debug.Log($"discarded {(currentCard != null ? currentCard.name : "something probaby")}");
     }
     
-    internal void OnCardAdded(CardObject card)
+    internal void OnCardAdded(Card card)
     {
         if (currentCard == null) currentCard = card;
-        Debug.Log(currentCard == null);
         UpdateHandLayout();
     }
 
@@ -50,7 +54,7 @@ public class Hand : MonoBehaviour
         player.input.Player.Use.performed += OnUsePerformed;
         player.input.Player.SecondaryUse.performed += OnSecondaryUsePerformed;
         player.input.Player.Discard.performed += OnDiscardPerformed;
-        hand.onAddCard += OnCardAdded;
+        cards.onAddCard += OnCardAdded;
     }
 
     internal void UnsubscribeActions()
@@ -58,14 +62,22 @@ public class Hand : MonoBehaviour
         player.input.Player.Use.performed -= OnUsePerformed;
         player.input.Player.SecondaryUse.performed -= OnSecondaryUsePerformed;
         player.input.Player.Discard.performed -= OnDiscardPerformed;
-        hand.onAddCard -= OnCardAdded;
+        cards.onAddCard -= OnCardAdded;
     }
 
     public void UpdateHandLayout()
     {
-        foreach (CardObject card in hand.cards)
+        foreach (Card card in cards.cards)
         {
-            if (card != currentCard) card.gameObject.SetActive(false);
+            if (card == currentCard) continue;
+
+            int iDelta = cards.FindIndex(card) - cards.FindIndex(currentCard);
+            float sqrtIDelta = Mathf.Sqrt(iDelta);
+
+            card.transform.SetLocalPositionAndRotation(
+                Vector3.left * sqrtIDelta * handSpread + Vector3.down * sqrtIDelta * handDrop, 
+                Quaternion.Euler(0f, 0f, iDelta * handRotation)
+                );
         }
     }
 }

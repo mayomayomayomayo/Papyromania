@@ -1,25 +1,28 @@
-using UnityEngine;
 using System;
+using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
 public abstract class CardBehaviour : MonoBehaviour
 {
+    [Header("Owner")]
     public Card owner;
 
     [Header("References")]
     public BoxCollider cardCollider;
     public Player player;
-    public Hand playerHand;
 
     [Header("State")]
     public CardState state;
+
+    [Header("Events")]
+    public Action<Player> onPickup;
 
     private void Awake()
     {
         GetRefs();
     }
 
-    private void GetRefs()
+    protected virtual void GetRefs()
     {
         cardCollider = GetComponent<BoxCollider>();
     }
@@ -35,23 +38,15 @@ public abstract class CardBehaviour : MonoBehaviour
         if (other.CompareTag("Player") && state == CardState.Dropped)
         {
             cardCollider.enabled = false;
-            state = CardState.InHand;
 
             player = other.GetComponent<Player>();
-            playerHand = player.hand;
 
-            Pickup();
+            state = CardState.InHand;
+
+            transform.SetParent(player.playerHandAnchor);
+
+            player.hand.cards.AddCard(owner);
         }
-    }
-
-    protected virtual void Pickup()
-    {
-        if (player == null) throw new Exception("Player reference is null");
-
-        playerHand.cards.AddCard(owner);
-
-        transform.SetParent(player.playerHandAnchor);
-        StartCoroutine(transform.Move(player.playerHandAnchor));
     }
 
     public enum CardState

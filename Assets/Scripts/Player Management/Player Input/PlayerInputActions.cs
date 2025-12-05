@@ -162,6 +162,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PreviousCard"",
+                    ""type"": ""Value"",
+                    ""id"": ""45412111-a392-47a7-96d7-b098868e7dc8"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""NextCard"",
+                    ""type"": ""Value"",
+                    ""id"": ""479ce656-dcda-4eb3-ac6b-8be4a7d6c951"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -296,6 +314,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Discard"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c14398b5-5379-4f19-bfcf-f62b966fe24d"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PreviousCard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f510f92f-243a-4410-b0d5-45dcaa4ea76d"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NextCard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -340,6 +380,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_SecondaryUse = m_Player.FindAction("SecondaryUse", throwIfNotFound: true);
         m_Player_OpenConsole = m_Player.FindAction("OpenConsole", throwIfNotFound: true);
         m_Player_Discard = m_Player.FindAction("Discard", throwIfNotFound: true);
+        m_Player_PreviousCard = m_Player.FindAction("PreviousCard", throwIfNotFound: true);
+        m_Player_NextCard = m_Player.FindAction("NextCard", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Newaction = m_UI.FindAction("New action", throwIfNotFound: true);
@@ -432,6 +474,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_SecondaryUse;
     private readonly InputAction m_Player_OpenConsole;
     private readonly InputAction m_Player_Discard;
+    private readonly InputAction m_Player_PreviousCard;
+    private readonly InputAction m_Player_NextCard;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -475,6 +519,14 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Discard".
         /// </summary>
         public InputAction @Discard => m_Wrapper.m_Player_Discard;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/PreviousCard".
+        /// </summary>
+        public InputAction @PreviousCard => m_Wrapper.m_Player_PreviousCard;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/NextCard".
+        /// </summary>
+        public InputAction @NextCard => m_Wrapper.m_Player_NextCard;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -525,6 +577,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Discard.started += instance.OnDiscard;
             @Discard.performed += instance.OnDiscard;
             @Discard.canceled += instance.OnDiscard;
+            @PreviousCard.started += instance.OnPreviousCard;
+            @PreviousCard.performed += instance.OnPreviousCard;
+            @PreviousCard.canceled += instance.OnPreviousCard;
+            @NextCard.started += instance.OnNextCard;
+            @NextCard.performed += instance.OnNextCard;
+            @NextCard.canceled += instance.OnNextCard;
         }
 
         /// <summary>
@@ -560,6 +618,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Discard.started -= instance.OnDiscard;
             @Discard.performed -= instance.OnDiscard;
             @Discard.canceled -= instance.OnDiscard;
+            @PreviousCard.started -= instance.OnPreviousCard;
+            @PreviousCard.performed -= instance.OnPreviousCard;
+            @PreviousCard.canceled -= instance.OnPreviousCard;
+            @NextCard.started -= instance.OnNextCard;
+            @NextCard.performed -= instance.OnNextCard;
+            @NextCard.canceled -= instance.OnNextCard;
         }
 
         /// <summary>
@@ -752,6 +816,20 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDiscard(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "PreviousCard" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPreviousCard(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "NextCard" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnNextCard(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

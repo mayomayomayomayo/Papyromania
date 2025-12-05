@@ -386,6 +386,11 @@ Transform:
   - {fileID: 410087041}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &786445189 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6119491206870901436, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+  m_PrefabInstance: {fileID: 5387417978703635200}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &850268627
 GameObject:
   m_ObjectHideFlags: 0
@@ -958,9 +963,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerContainer
       objectReference: {fileID: 0}
+    - target: {fileID: 2806040483122118885, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      propertyPath: playerHandAnchor
+      value: 
+      objectReference: {fileID: 786445189}
     - target: {fileID: 3983973272719745371, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
       propertyPath: handDrop
-      value: 0.1
+      value: 0.13
       objectReference: {fileID: 0}
     - target: {fileID: 3983973272719745371, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
       propertyPath: handSpread
@@ -968,6 +977,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3983973272719745371, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
       propertyPath: handRotation
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3983973272719745371, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      propertyPath: cardOrderSpeed
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8265711683795251022, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}

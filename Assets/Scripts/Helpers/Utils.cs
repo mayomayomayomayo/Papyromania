@@ -3,7 +3,7 @@ using System.Collections;
 
 public static class TransformUtils
 {
-    public static IEnumerator Move(this Transform obj, Transform target, float moveSpeed = 10f, float snapDistance = 0.01f)
+    public static IEnumerator MoveTo(this Transform obj, Transform target, float moveSpeed = 10f, float snapDistance = 0.01f)
     {
         while (Vector3.Distance(obj.position, target.position) >= snapDistance)
         {

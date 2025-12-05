@@ -20,19 +20,18 @@ public static class Cards
         for (int i = 0; i < rawCards.Length; i++)
         {
             CardData raw = rawCards[i];
-            CardDefinition cd = (CardDefinition) Activator.CreateInstance(raw.type.ParseSubclass(), raw);
+            CardDefinition cd = (CardDefinition)Activator.CreateInstance(raw.type.ParseSubclass(), raw);
             
             cards.Add(cd);
             byName[raw.name] = cd;
-
-            Debug.Log($"Successfully loaded {raw.name}");
         }
     }
 
     public static CardDefinition Get(string match) => byName.TryGetValue(match, out CardDefinition got) ? got : null;
+
     public static CardDefinition Get(int match) => cards[match];
 
-    public static Card CreateCard(CardDefinition def, Vector3? pos = null)
+    public static Card CreateCard(CardDefinition def, Vector3? pos = null, CardBehaviour.CardState state = CardBehaviour.CardState.Dropped)
     {
         Vector3 position = pos ?? Vector3.zero;
 
@@ -47,6 +46,8 @@ public static class Cards
         card.behaviour.owner = card;
         card.visuals.owner = card;
 
+        card.behaviour.state = state;
+
         return card;
     }
 }
@@ -54,6 +55,7 @@ public static class Cards
 public static class CardUtils
 {
     private static GameObject _cardCanvasPrefab; 
+
     public static GameObject CardCanvasPrefab { get { return _cardCanvasPrefab = _cardCanvasPrefab != null ? _cardCanvasPrefab : Resources.Load<GameObject>("Prefabs/CardCanvas"); } }
 
     public static GameObject NewCard(Vector3 pos) => UnityEngine.Object.Instantiate(CardCanvasPrefab, pos, Quaternion.identity);

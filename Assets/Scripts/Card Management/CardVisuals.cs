@@ -2,8 +2,9 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class CardVisuals : MonoBehaviour
+public sealed class CardVisuals : MonoBehaviour
 {
+    [Header("Owner")]
     public Card owner;
 
     [Header("Fields")]
@@ -37,12 +38,19 @@ public class CardVisuals : MonoBehaviour
         artImage = GetImage("CardArt");
     }
 
-    public virtual void UpdateValues()
+    public void UpdateValues()
     {
         nameField.text = owner.definition.name;
         descriptionField.text = owner.definition.description;
         baseImage.sprite = owner.definition.cardBase;
         artImage.sprite = owner.definition.cardArt;
+    }
+
+    public void Pickup(Player player)
+    {
+        transform.SetParent(player.playerHandAnchor);
+        transform.rotation = player.playerHandAnchor.rotation;
+        StartCoroutine(transform.MoveTo(player.playerHandAnchor));
     }
 }
 

@@ -43,7 +43,7 @@
             "name": "Consumable Card Test",
             "description": "Test",
             "pathToSprite": "Sprites/Ammunition",
-            "mods": ["NonUsable", "AutoDiscardOnEmpty"],
+            "mods": ["AutoDiscardOnEmpty"],
             "leftFieldText": "SIX",
             "rightFieldText": "SEVN",
             "damage": "This should simply not parse?",

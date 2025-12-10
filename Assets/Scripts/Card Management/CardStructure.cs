@@ -4,45 +4,42 @@ using UnityEngine;
 
 public class CardStructure
 {
-    [Header("Contents")]
-    public List<Card> cards = new();
+    private readonly List<Card> _cards = new();
+
+    public IReadOnlyList<Card> Cards => _cards;
 
     [Header("Events")]
     public Action<Card> onAddCard;
+    public Action<Card> onRemoveCard;
     
     public virtual void AddCard(Card card)
     {
-        cards.Add(card);
-        onAddCard.Invoke(card);
+        _cards.Add(card);
+        onAddCard?.Invoke(card);
+    }
+
+    public virtual void RemoveCard(Card card)
+    {
+        _cards.RemoveAt(FindIndex(card));
+        onRemoveCard?.Invoke(card);
+    }
+
+    public virtual void Move(Card card, int pos)
+    {
+        _cards.Insert(pos, card);
+        _cards.RemoveAt(FindIndex(card));
+        onAddCard?.Invoke(card);
     }
 
     public virtual int FindIndex(Card card)
     {
-        for (int i = 0; i < cards.Count; i++)
-        {
-            if (card == cards[i]) return i;
-        }
-        throw new Exception("Index not found");
+        int index = _cards.IndexOf(card);
+        return index >= 0 ? index : throw new Exception("Index not found");
     }
 
     public virtual int FindIndex(string match)
     {
-        for (int i = 0; i < cards.Count; i++)
-        {
-            if (cards[i].definition.name == match) return i;
-        }
-        throw new Exception("Index not found");
-    }
-
-    public virtual List<int> FindIndexes(string match)
-    {
-        List<int> indexes = new();
-
-        for (int i = 0; i < cards.Count; i++)
-        {
-            if (cards[i].definition.name == match) indexes.Add(i);
-        }
-
-        return indexes;
+        int index = _cards.FindIndex(c => c.definition.name == match);
+        return index >= 0 ? index : throw new Exception("Index not found");
     }
 }

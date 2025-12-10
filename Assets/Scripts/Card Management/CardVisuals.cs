@@ -44,6 +44,8 @@ public sealed class CardVisuals : MonoBehaviour
         descriptionField.text = owner.definition.description;
         baseImage.sprite = owner.definition.cardBase;
         artImage.sprite = owner.definition.cardArt;
+
+        gameObject.name = owner.definition.name;
     }
 
     public void Pickup(Player player)

@@ -45,7 +45,7 @@ public abstract class CardBehaviour : MonoBehaviour
 
             transform.SetParent(player.playerHandAnchor);
 
-            player.hand.cards.AddCard(owner);
+            player.hand.handStructure.AddCard(owner);
         }
     }
 

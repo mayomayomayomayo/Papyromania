@@ -1,6 +1,7 @@
 using System;
 using UnityEngine; 
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Player))]
 public class Hand : MonoBehaviour
@@ -15,6 +16,7 @@ public class Hand : MonoBehaviour
 
     [Header("Events")]
     public Action onHandUpdated;
+    public static List<InputAction> handUpdatingActions;
 
     private Player player;
 
@@ -33,26 +35,26 @@ public class Hand : MonoBehaviour
 
     private void OnDisable() => UnsubscribeActions();
     
-    internal void OnUsePerformed(InputAction.CallbackContext ctx)
+    internal void Use()
     {
         if (currentCard == null) return;
         if ((currentCard.definition.modifiers & (CardDefinition.CardModifiers.NonUsable | CardDefinition.CardModifiers.NonUsablePrimary)) == 0) 
         currentCard.behaviour.UsePrimary();
     }
 
-    internal void OnSecondaryUsePerformed(InputAction.CallbackContext ctx)
+    internal void SecondaryUse()
     {
         if (currentCard == null) return;
         if ((currentCard.definition.modifiers & (CardDefinition.CardModifiers.NonUsable | CardDefinition.CardModifiers.NonUsableSecondary)) == 0)
         currentCard.behaviour.UseSecondary();
     }
 
-    internal void OnDiscardPerformed(InputAction.CallbackContext ctx)
+    internal void Discard()
     {
         Debug.Log($"discarded {(currentCard != null ? currentCard.name : "something probaby")}");
     }
 
-    internal void OnPreviousCardPerformed(InputAction.CallbackContext ctx)
+    public void PreviousCard()
     {
         int index = handStructure.FindIndex(currentCard) - 1;
         
@@ -63,7 +65,7 @@ public class Hand : MonoBehaviour
         onHandUpdated?.Invoke();
     }
 
-    internal void OnNextCardPerformed(InputAction.CallbackContext ctx)
+    public void NextCard()
     {
         int index = handStructure.FindIndex(currentCard) + 1;
 
@@ -88,27 +90,31 @@ public class Hand : MonoBehaviour
 
     internal void SubscribeActions()
     {
-        player.input.Player.Use.performed += OnUsePerformed;
-        player.input.Player.SecondaryUse.performed += OnSecondaryUsePerformed;
-        player.input.Player.Discard.performed += OnDiscardPerformed;
-        player.input.Player.PreviousCard.performed += OnPreviousCardPerformed;
-        player.input.Player.NextCard.performed += OnNextCardPerformed;
+        PlayerInputActions.CardUsageActions cardUsageMap = player.input.CardUsage; 
+
+        cardUsageMap.Use.performed += _ => Use();
+        cardUsageMap.SecondaryUse.performed += _ => SecondaryUse();
+        cardUsageMap.Discard.performed += _ => Discard();
+        cardUsageMap.PreviousCard.performed += _ => PreviousCard();
+        cardUsageMap.NextCard.performed += _ => NextCard();
 
         // Updates
         handStructure.onAddCard += OnCardAdded;
         handStructure.onRemoveCard += OnCardRemoved;
 
         // Visuals
-        onHandUpdated += () => this.UpdateLayout(HandAnimations.HandLayout.Aiming);
+        onHandUpdated += () => this.UpdateLayout(HandAnimations.HandLayout.Resting);
     }
 
     internal void UnsubscribeActions()
     {
-        player.input.Player.Use.performed -= OnUsePerformed;
-        player.input.Player.SecondaryUse.performed -= OnSecondaryUsePerformed;
-        player.input.Player.Discard.performed -= OnDiscardPerformed;
-        player.input.Player.PreviousCard.performed -= OnPreviousCardPerformed;
-        player.input.Player.NextCard.performed -= OnNextCardPerformed;
+        PlayerInputActions.CardUsageActions cardUsageMap = player.input.CardUsage;
+        
+        cardUsageMap.Use.performed -= _ => Use();
+        cardUsageMap.SecondaryUse.performed -= _ => SecondaryUse();
+        cardUsageMap.Discard.performed -= _ => Discard();
+        cardUsageMap.PreviousCard.performed -= _ => PreviousCard();
+        cardUsageMap.NextCard.performed -= _ => NextCard();
 
         // Updates
         handStructure.onAddCard -= OnCardAdded;

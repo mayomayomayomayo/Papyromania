@@ -16,11 +16,11 @@ public sealed class Player : MonoBehaviour
 
     private void OnEnable()
     {
-        input.Player.Enable();
+        input.Enable();
     }
 
     private void OnDisable()
     {
-        input.Player.Disable();
+        input.Disable();
     }
 }

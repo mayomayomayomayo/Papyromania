@@ -12,6 +12,7 @@ public static class AppStart
         foreach (CardDefinition cd in Cards.cards)
         {
             Cards.CreateCard(cd);
+            Cards.CreateCard(cd);
         }
     }
 }

@@ -47,12 +47,5 @@ public sealed class CardVisuals : MonoBehaviour
 
         gameObject.name = owner.definition.name;
     }
-
-    public void Pickup(Player player)
-    {
-        transform.SetParent(player.playerHandAnchor);
-        transform.rotation = player.playerHandAnchor.rotation;
-        StartCoroutine(transform.MoveTo(player.playerHandAnchor));
-    }
 }
 

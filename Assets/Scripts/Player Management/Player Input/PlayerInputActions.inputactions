@@ -1,12 +1,13 @@
 {
+    "version": 1,
     "name": "PlayerInputActions",
     "maps": [
         {
-            "name": "Player",
+            "name": "Movement",
             "id": "29b610b0-847b-4d04-9080-5e95a58bd775",
             "actions": [
                 {
-                    "name": "Movement",
+                    "name": "Direction",
                     "type": "Value",
                     "id": "af948426-051f-4f41-a6e7-cf16bd050a1a",
                     "expectedControlType": "Vector2",
@@ -40,60 +41,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Use",
-                    "type": "Button",
-                    "id": "50bc0df1-b185-4aa8-b519-1fd42baca986",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SecondaryUse",
-                    "type": "Button",
-                    "id": "145e7e16-f010-4d4c-8c8d-6f44b0459e4f",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "OpenConsole",
-                    "type": "Button",
-                    "id": "832c7a10-001b-4a20-8786-09d5faaf1eff",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Discard",
-                    "type": "Button",
-                    "id": "db383999-6e61-4254-9187-07c84fea798c",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "PreviousCard",
-                    "type": "Value",
-                    "id": "45412111-a392-47a7-96d7-b098868e7dc8",
-                    "expectedControlType": "Axis",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "NextCard",
-                    "type": "Value",
-                    "id": "479ce656-dcda-4eb3-ac6b-8be4a7d6c951",
-                    "expectedControlType": "Axis",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -104,7 +51,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Movement",
+                    "action": "Direction",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -115,7 +62,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Movement",
+                    "action": "Direction",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -126,7 +73,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Movement",
+                    "action": "Direction",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -137,7 +84,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Movement",
+                    "action": "Direction",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -148,7 +95,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Movement",
+                    "action": "Direction",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -184,10 +131,63 @@
                     "action": "Slam",
                     "isComposite": false,
                     "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "CardUsage",
+            "id": "0e39979a-58c4-44a4-9f4e-25cabc830738",
+            "actions": [
+                {
+                    "name": "Use",
+                    "type": "Button",
+                    "id": "0fd04b6f-a065-49cd-b1af-631a9a114331",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
+                    "name": "SecondaryUse",
+                    "type": "Button",
+                    "id": "93f622cd-2a48-4f8a-bc39-11941dc130f5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Discard",
+                    "type": "Button",
+                    "id": "72ed2b29-2e96-4f37-89ca-f5bfbbdeb624",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PreviousCard",
+                    "type": "Value",
+                    "id": "44510f8c-2244-4376-9cbb-afbc20ae47b3",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "NextCard",
+                    "type": "Value",
+                    "id": "6f8556d7-c5c8-480a-9ece-50a18271dc2b",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
                     "name": "",
-                    "id": "9f95a6ac-8796-4e4f-a4ae-4574a29ab8bc",
+                    "id": "856d891c-a388-4d94-b395-f55ec84553c2",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
@@ -198,7 +198,7 @@
                 },
                 {
                     "name": "",
-                    "id": "74cc2dac-1ef4-469d-8b7c-dcf5c20340b4",
+                    "id": "30b3a8d6-c207-447e-9b18-a27288f9fde1",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
@@ -209,18 +209,7 @@
                 },
                 {
                     "name": "",
-                    "id": "297eb686-f863-4b9d-a18e-0b7ffd727634",
-                    "path": "<Keyboard>/f1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "OpenConsole",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "67831ef8-804d-4add-8085-fce67e7336fe",
+                    "id": "ec1f1185-1ef1-4e3d-9b97-ad421d4dc7c9",
                     "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
@@ -231,8 +220,8 @@
                 },
                 {
                     "name": "",
-                    "id": "c14398b5-5379-4f19-bfcf-f62b966fe24d",
-                    "path": "<Mouse>/scroll/down",
+                    "id": "db9c7808-9195-4413-b9b8-6f021111ec50",
+                    "path": "<Mouse>/scroll/up",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -242,40 +231,12 @@
                 },
                 {
                     "name": "",
-                    "id": "f510f92f-243a-4410-b0d5-45dcaa4ea76d",
-                    "path": "<Mouse>/scroll/up",
+                    "id": "72121cb2-3dae-48b4-b191-f5e333bc5fae",
+                    "path": "<Mouse>/scroll/down",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "NextCard",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "UI",
-            "id": "d8a4cfca-3858-4169-aa8f-7070192ee8dd",
-            "actions": [
-                {
-                    "name": "New action",
-                    "type": "Button",
-                    "id": "572b2816-7bf9-4590-946f-ab7555e47ec9",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "2b07a8c7-f2cd-44ab-9171-424a1a21d3bf",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -68,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ProcessPlayerMovement()
     {
-        Vector2 movementInput = player.input.Player.Movement.ReadValue<Vector2>();
+        Vector2 movementInput = player.input.Movement.Direction.ReadValue<Vector2>();
         Vector3 forward = player.playerCamera.transform.forward;
         Vector3 right = player.playerCamera.transform.right;
         forward.y = 0;
@@ -109,7 +109,7 @@ public class PlayerMovement : MonoBehaviour
     {
         hasDash = false;
         Rigidbody rb = player.playerRigidbody;
-        Vector2 moveInput = player.input.Player.Movement.ReadValue<Vector2>();
+        Vector2 moveInput = player.input.Movement.Direction.ReadValue<Vector2>();
         Vector3 forward = rb.transform.forward;
         Vector3 right = rb.transform.right;
         forward.y = 0;
@@ -126,11 +126,6 @@ public class PlayerMovement : MonoBehaviour
     {
         while (!IsGrounded())
         {
-            if (player.input.Player.Dash.ReadValue<float>() > 0f)
-            {
-                slamCoroutine = null;
-                yield break;
-            }
             player.playerRigidbody.linearVelocity = Vector3.down * Time.fixedDeltaTime * slamFallSpeed;
             yield return null;
         }
@@ -139,15 +134,15 @@ public class PlayerMovement : MonoBehaviour
 
     internal void SubscribeActions()
     {
-        player.input.Player.Jump.performed += OnJumpPerformed;
-        player.input.Player.Dash.performed += OnDashPerformed;
-        player.input.Player.Slam.performed += OnSlamPerformed;
+        player.input.Movement.Jump.performed += OnJumpPerformed;
+        player.input.Movement.Dash.performed += OnDashPerformed;
+        player.input.Movement.Slam.performed += OnSlamPerformed;
     }
 
     internal void UnsubscribeActions()
     {
-        player.input.Player.Jump.performed -= OnJumpPerformed;
-        player.input.Player.Dash.performed -= OnDashPerformed;
-        player.input.Player.Slam.performed -= OnSlamPerformed;
+        player.input.Movement.Jump.performed -= OnJumpPerformed;
+        player.input.Movement.Dash.performed -= OnDashPerformed;
+        player.input.Movement.Slam.performed -= OnSlamPerformed;
     }
 }

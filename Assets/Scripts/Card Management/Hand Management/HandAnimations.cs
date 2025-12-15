@@ -10,52 +10,41 @@ public static class HandAnimations
         Aiming
     }
 
-    public static void UpdateLayout(this Hand hand, HandLayout layout)
+    public static void UpdateLayout(this Hand hand, HandLayout layout) // THE ARCANE METH (has been contained)
     {
         foreach (Coroutine cr in hand.visuals.coroutines) if (cr != null) hand.StopCoroutine(cr);
         hand.visuals.coroutines.Clear();
-        
-        UpdateLayoutInternal(hand, layout);
-    }
 
-    private static void UpdateLayoutInternal(Hand hand, HandLayout layout)
-    {
         int currentCardIndex = hand.handStructure.FindIndex(hand.currentCard);
 
-        foreach (Card card in hand.handStructure.Cards)
+        for (int i = 0; i < hand.handStructure.Cards.Count; i++)
         {
-            int iDelta = hand.handStructure.FindIndex(card) - currentCardIndex;
-            float sqrtIDelta = Mathf.Sqrt(Mathf.Abs(iDelta));
+            Card card = hand.handStructure.Cards[i];
+            HandVisuals vis = hand.visuals;
+            int handSize = hand.handStructure.Cards.Count;
 
-            PosRot offset = layout switch
+            int iDelta = i - currentCardIndex;
+            int maxDelta = Mathf.Max(currentCardIndex, handSize - 1 - currentCardIndex);
+
+            float t = maxDelta > 0 ? (float) iDelta / maxDelta : 0f;
+
+            TransformData offset = layout switch
             {
-                HandLayout.Resting => new(
-                    -sqrtIDelta * hand.visuals.handSpreadResting * Mathf.Sign(iDelta),
-                    -sqrtIDelta * hand.visuals.handDrop,
-                    0.05f * Mathf.Abs(iDelta),
+                HandLayout.Resting => ProcessOffset(vis.restingLayout, t),
 
-                    Quaternion.Euler(0f, 0f, iDelta * hand.visuals.handRotation)
-                ),
-
-                HandLayout.Aiming => new(
-                    sqrtIDelta * hand.visuals.handSpreadAiming * Mathf.Sign(iDelta),
-                    0f,
-                    0.05f * Math.Abs(iDelta),
-
-                    Quaternion.identity
-                ),
-
-                _ => throw new Exception("physically impossible btw")
+                HandLayout.Aiming => ProcessOffset(vis.aimingLayout, t),
+            
+                _ => throw new Exception("how")
             };
 
-            hand.visuals.coroutines.Add(hand.StartCoroutine(OrderCard(
+            hand.visuals.coroutines.Add(hand.StartCoroutine(UpdateCardOrder(
                 card,
                 offset,
-                hand.visuals.cardOrderSpeed
+                vis.cardOrderSpeed
             )));
         }
 
-        static IEnumerator OrderCard(Card card, PosRot target, float step, float snap = 0.001f)
+        static IEnumerator UpdateCardOrder(Card card, TransformData target, float step, float snap = 0.001f)
         {
             while (Vector3.Distance(card.transform.localPosition, target.position) >= snap)
             {
@@ -63,24 +52,46 @@ public static class HandAnimations
                     Vector3.Lerp(card.transform.localPosition, target.position, step * Time.deltaTime),
                     Quaternion.Slerp(card.transform.localRotation, target.rotation, step * Time.deltaTime)
                 );
+                card.transform.localScale = Vector3.Lerp(card.transform.localScale, target.scale, step * Time.deltaTime);
 
                 yield return null;
             }
 
             card.transform.SetLocalPositionAndRotation(target.position, target.rotation);
+            card.transform.localScale = target.scale;
+        }
+
+        static TransformData ProcessOffset(HandLayoutData ld, float t)
+        {
+            return new(
+                ProcessValues(ld.rawOffset.position, ld.positionCurves, t),
+                Quaternion.Euler(ProcessValues(ld.rawOffset.rotation.eulerAngles, ld.rotationCurves, t)),
+                ProcessValues(ld.rawOffset.scale, ld.scaleCurves, t)
+            );
+
+            static Vector3 ProcessValues(Vector3 raw, AxisCurves curves, float t)
+            {
+                return new(
+                    raw.x * curves.x.Evaluate(t),
+                    raw.y * curves.y.Evaluate(t),
+                    raw.z * curves.z.Evaluate(t)
+                );
+            }
         }
     }
 }
 
 [Serializable]
-public struct PosRot
+public struct TransformData
 {
     public Vector3 position;
     public Quaternion rotation;
+    public Vector3 scale;
 
-    public PosRot(float x, float y, float z, Quaternion rot)
+    public TransformData(Vector3 position, Quaternion rotation, Vector3 scale)
     {
-        position = new(x, y, z);
-        rotation = rot;
+        this.position = position;
+        this.rotation = rotation;
+        this.scale = scale;
     }
 }

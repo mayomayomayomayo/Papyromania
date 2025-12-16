@@ -1044,6 +1044,34 @@ PrefabInstance:
       propertyPath: visuals.restingLayout.positionCurves.y.m_Curve.Array.data[0].outSlope
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6884542324280510736, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      propertyPath: dashForce
+      value: 450
+      objectReference: {fileID: 0}
+    - target: {fileID: 6884542324280510736, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      propertyPath: jumpForce
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6884542324280510736, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      propertyPath: acceleration
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6884542324280510736, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      propertyPath: slamFallSpeed
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 6884542324280510736, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      propertyPath: dashCooldown.duration
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6884542324280510736, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      propertyPath: jumpCooldown.duration
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6884542324280510736, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      propertyPath: slamCooldown.duration
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 8265711683795251022, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.2671566

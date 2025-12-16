@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.InputSystem;
+using System;
+
 
 [RequireComponent(typeof(Player))]
 [RequireComponent(typeof(CapsuleCollider))]
@@ -10,28 +12,41 @@ public class PlayerMovement : MonoBehaviour
     public float movementSpeed;
     public float acceleration;
 
+    [NonSerialized] public Vector2 moveInput;
+    [NonSerialized] public Vector3 forward;
+    [NonSerialized] public Vector3 right;
+    [NonSerialized] public Vector3 moveDirection;
+
     [Header("Jump")]
     public float jumpForce;
-    public float jumpCooldown;
+    public Cooldown jumpCooldown;
 
     [Header("Dash")]
     public float dashForce;
-    public float dashCooldown;
-    public bool hasDash;
+    public Cooldown dashCooldown;
+
+    [NonSerialized] public bool hasDash;
 
     [Header("Slam")]
     public float slamFallSpeed;
+    public Cooldown slamCooldown;
 
     [Header("Grounding")]
-    public float groundCheckDistance;
     public float groundCheckSphereRadius;
-
-    private Coroutine jumpCoroutine, dashCoroutine, slamCoroutine;
+    private float groundCheckDistance;
+    
+    [Header("References")]
     private Player player;
+    private Rigidbody rb;
+    private Camera cam;
+    private PlayerInputActions.MovementActions input;
     
     private void Awake()
     {
         player = GetComponent<Player>();
+        rb = player.playerRigidbody;
+        cam = player.playerCamera;
+        input = player.input.Movement;
         groundCheckDistance = GetComponent<CapsuleCollider>().height / 2;
     }
 
@@ -56,93 +71,93 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        UpdateInput();
         TrackCameraYRotation();
         ProcessPlayerMovement();
         hasDash |= IsGrounded();
     }
 
+    private void UpdateInput()
+    {
+        moveInput = input.Direction.ReadValue<Vector2>();
+        forward = Vector3.Scale(cam.transform.forward, new(1, 0, 1)).normalized;
+        right = Vector3.Scale(cam.transform.right, new(1, 0, 1)).normalized;
+        moveDirection = (forward * moveInput.y + right * moveInput.x).normalized;
+    }
+
     private void TrackCameraYRotation()
     {
-        transform.rotation = Quaternion.Euler(0f, player.playerCamera.transform.eulerAngles.y, 0f);
+        transform.rotation = Quaternion.Euler(0f, cam.transform.eulerAngles.y, 0f);
     }
 
     private void ProcessPlayerMovement()
     {
-        Vector2 movementInput = player.input.Movement.Direction.ReadValue<Vector2>();
-        Vector3 forward = player.playerCamera.transform.forward;
-        Vector3 right = player.playerCamera.transform.right;
-        forward.y = 0;
-        right.y = 0;
-        Vector3 moveDir = (forward * movementInput.y + right * movementInput.x).normalized;
-        Vector3 targetVel = moveDir * movementSpeed;
-        Rigidbody rb = player.playerRigidbody;
+        Vector3 targetVel = moveDirection * movementSpeed;
+        
         Vector3 horizontalVel = new(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-        Vector3 newHorizontalVel = Vector3.Lerp(horizontalVel, targetVel, acceleration);
-        rb.linearVelocity = new Vector3(newHorizontalVel.x, rb.linearVelocity.y, newHorizontalVel.z);
+        
+        Vector3 velocityDelta = targetVel - horizontalVel;
+
+        rb.AddForce(velocityDelta * acceleration, ForceMode.VelocityChange);
     }
 
-    internal void OnJumpPerformed(InputAction.CallbackContext ctx)
+    private void TryJump(InputAction.CallbackContext ctx)
     {
-        if (IsGrounded()) jumpCoroutine ??= player.StartCoroutine(Jump());
+        if (!IsGrounded() || !jumpCooldown.Ready) return;
+
+        rb.linearVelocity = Vector3.Scale(rb.linearVelocity, new(1, 0, 1));
+        rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
+        
+        jumpCooldown.Trigger();
     }
 
-    internal void OnDashPerformed(InputAction.CallbackContext ctx)
+    private void TryDash(InputAction.CallbackContext ctx)
     {
-        if (hasDash) dashCoroutine ??= player.StartCoroutine(Dash());
-    }
+        if (!hasDash || !dashCooldown.Ready) return;
 
-    internal void OnSlamPerformed(InputAction.CallbackContext ctx)
-    {
-        if (!IsGrounded()) slamCoroutine ??= player.StartCoroutine(Slam());
-    }
-
-    internal IEnumerator Jump()
-    {
-        Rigidbody rb = player.playerRigidbody;
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        yield return new WaitForSeconds(jumpCooldown);
-        jumpCoroutine = null;
-    }
-
-    internal IEnumerator Dash()
-    {
         hasDash = false;
-        Rigidbody rb = player.playerRigidbody;
-        Vector2 moveInput = player.input.Movement.Direction.ReadValue<Vector2>();
-        Vector3 forward = rb.transform.forward;
-        Vector3 right = rb.transform.right;
-        forward.y = 0;
-        right.y = 0;
-        Vector3 dashDir = (forward * moveInput.y + right * moveInput.x).normalized;
-        if (dashDir == Vector3.zero) dashDir = rb.transform.forward;
-        rb.linearVelocity = Vector3.zero;
-        rb.AddForce(dashDir * dashForce, ForceMode.Impulse);
-        yield return new WaitForSeconds(dashCooldown);
-        dashCoroutine = null;
-    }
 
-    internal IEnumerator Slam()
+        Vector3 dashDirection = moveDirection != Vector3.zero ? moveDirection : rb.transform.forward;
+
+        rb.linearVelocity = Vector3.zero;
+        rb.AddForce(dashDirection * dashForce, ForceMode.VelocityChange);
+
+        dashCooldown.Trigger();
+    }
+    
+    private void TrySlam(InputAction.CallbackContext ctx)
     {
-        while (!IsGrounded())
-        {
-            player.playerRigidbody.linearVelocity = Vector3.down * Time.fixedDeltaTime * slamFallSpeed;
-            yield return null;
-        }
-        slamCoroutine = null;
+        if (IsGrounded() || !slamCooldown.Ready) return;
+        
+        rb.linearVelocity = Vector3.down * slamFallSpeed;
+
+        slamCooldown.Trigger();
     }
 
     internal void SubscribeActions()
     {
-        player.input.Movement.Jump.performed += OnJumpPerformed;
-        player.input.Movement.Dash.performed += OnDashPerformed;
-        player.input.Movement.Slam.performed += OnSlamPerformed;
+        player.input.Movement.Jump.performed += TryJump;
+        player.input.Movement.Dash.performed += TryDash;
+        player.input.Movement.Slam.performed += TrySlam;
     }
 
     internal void UnsubscribeActions()
     {
-        player.input.Movement.Jump.performed -= OnJumpPerformed;
-        player.input.Movement.Dash.performed -= OnDashPerformed;
-        player.input.Movement.Slam.performed -= OnSlamPerformed;
+        player.input.Movement.Jump.performed -= TryJump;
+        player.input.Movement.Dash.performed -= TryDash;
+        player.input.Movement.Slam.performed -= TrySlam;
     }
+}
+
+[Serializable]
+public class Cooldown
+{
+    public float duration;
+    private float end;
+
+    public Cooldown(float duration) => this.duration = duration;
+
+    public bool Ready => Time.time >= end;
+
+    public void Trigger() => end = Time.time + duration;
 }

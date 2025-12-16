@@ -17,12 +17,12 @@ public static class HandAnimations
 
         int currentCardIndex = hand.handStructure.FindIndex(hand.currentCard);
 
-        for (int i = 0; i < hand.handStructure.Cards.Count; i++)
+        for (int i = 0; i < hand.handStructure.Count; i++)
         {
-            Card card = hand.handStructure.Cards[i];
+            Card card = hand.handStructure[i];
             HandVisuals vis = hand.visuals;
-            int handSize = hand.handStructure.Cards.Count;
-
+            int handSize = hand.handStructure.Count;
+            
             int iDelta = i - currentCardIndex;
             int maxDelta = Mathf.Max(currentCardIndex, handSize - 1 - currentCardIndex);
 

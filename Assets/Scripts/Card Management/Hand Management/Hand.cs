@@ -59,8 +59,8 @@ public class Hand : MonoBehaviour
         int index = handStructure.FindIndex(currentCard) - 1;
         
         currentCard = index >= 0 ? 
-            handStructure.Cards[index] :
-            handStructure.Cards[^1];
+            handStructure[index] :
+            handStructure[^1];
 
         onHandUpdated?.Invoke();
     }
@@ -69,9 +69,9 @@ public class Hand : MonoBehaviour
     {
         int index = handStructure.FindIndex(currentCard) + 1;
 
-        currentCard = index < handStructure.Cards.Count ? 
-            handStructure.Cards[index] :
-            handStructure.Cards[0];
+        currentCard = index < handStructure.Count ? 
+            handStructure[index] :
+            handStructure[0];
 
         onHandUpdated?.Invoke();
     }

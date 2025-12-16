@@ -1,16 +1,21 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Collections;
 
-public class CardStructure
+
+public class CardStructure : IEnumerable<Card>
 {
     private readonly List<Card> _cards = new();
 
-    public IReadOnlyList<Card> Cards => _cards;
-
-    [Header("Events")]
     public Action<Card> onAddCard;
     public Action<Card> onRemoveCard;
+
+    public Card this[int index] => _cards[index];
+
+    public IEnumerator<Card> GetEnumerator() => _cards.GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    public virtual int Count => _cards.Count;
     
     public virtual void AddCard(Card card)
     {

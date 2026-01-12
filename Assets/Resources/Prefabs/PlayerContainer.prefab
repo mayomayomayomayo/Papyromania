@@ -248,6 +248,7 @@ GameObject:
   - component: {fileID: 7503625688886015631}
   - component: {fileID: 6884542324280510736}
   - component: {fileID: 3983973272719745371}
+  - component: {fileID: 5144952658787851809}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -288,6 +289,7 @@ MonoBehaviour:
   playerCamera: {fileID: 915159069525996557}
   playerRigidbody: {fileID: 7503625688886015631}
   hand: {fileID: 3983973272719745371}
+  playerMovement: {fileID: 6884542324280510736}
 --- !u!136 &5175677346158157263
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -351,14 +353,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 35
-  acceleration: 0.2
-  jumpForce: 7
-  jumpCooldown: 0.1
-  dashForce: 150
-  dashCooldown: 0.5
-  hasDash: 0
-  slamFallSpeed: 5000
-  groundCheckDistance: 0
+  acceleration: 0.25
+  jumpForce: 15
+  jumpCooldown:
+    duration: 0.1
+  dashForce: 450
+  dashCooldown:
+    duration: 0.5
+  grapple: {fileID: 5144952658787851809}
   groundCheckSphereRadius: 0.1
 --- !u!114 &3983973272719745371
 MonoBehaviour:
@@ -378,20 +380,56 @@ MonoBehaviour:
     restingLayout:
       rawOffset:
         position: {x: 0.75, y: 0.25, z: 0.1}
-        rotation: {x: 0, y: 0, z: 0.17364818, w: 0.9848077}
+        rotation: {x: 0, y: 0, z: 0.25881904, w: 0.9659258}
         scale: {x: 0.5, y: 0.5, z: 0.5}
       positionCurves:
         x:
           serializedVersion: 2
-          m_Curve: []
+          m_Curve:
+          - serializedVersion: 3
+            time: -1
+            value: -1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
         y:
           serializedVersion: 2
-          m_Curve: []
+          m_Curve:
+          - serializedVersion: 3
+            time: -1
+            value: -1
+            inSlope: 2
+            outSlope: 2
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
           m_PreInfinity: 2
-          m_PostInfinity: 2
+          m_PostInfinity: 0
           m_RotationOrder: 4
         z:
           serializedVersion: 2
@@ -471,7 +509,7 @@ MonoBehaviour:
           m_Curve:
           - serializedVersion: 3
             time: -1
-            value: -1
+            value: 1
             inSlope: 0
             outSlope: 0
             tangentMode: 0
@@ -480,7 +518,7 @@ MonoBehaviour:
             outWeight: 0
           - serializedVersion: 3
             time: 1
-            value: 1
+            value: -1
             inSlope: 0
             outSlope: 0
             tangentMode: 0
@@ -627,6 +665,34 @@ MonoBehaviour:
           m_RotationOrder: 4
   maxHandSize: 10
   currentCard: {fileID: 0}
+--- !u!114 &5144952658787851809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384048623393635476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30ca9aeed07aeb149b26eb1f611ae6a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Grapple
+  player: {fileID: 0}
+  hook: {fileID: 0}
+  state: 0
+  windIncreasePerTick: 0
+  minWind: 0
+  maxWind: 0
+  grappleStrengthCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  grappleLaunchForce: 0
+  grapplePullSpeed: 0
+  grappleRecoverSpeed: 0
+  grappleRange: 0
 --- !u!1 &7543057845778770997
 GameObject:
   m_ObjectHideFlags: 0
@@ -658,6 +724,162 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4986168058424104453}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8109674522399244683
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5958833623544607815}
+  - component: {fileID: 6158315076909912339}
+  - component: {fileID: 7811921895830237653}
+  - component: {fileID: 5678994296265652922}
+  - component: {fileID: 7964453181966839780}
+  - component: {fileID: 367765103903432090}
+  m_Layer: 0
+  m_Name: GrappleHook
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &5958833623544607815
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8109674522399244683}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4986168058424104453}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &6158315076909912339
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8109674522399244683}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &7811921895830237653
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8109674522399244683}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!135 &5678994296265652922
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8109674522399244683}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7964453181966839780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8109674522399244683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9979e27e997050d489eef4d1f7cf0400, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrappleHook
+  rb: {fileID: 367765103903432090}
+  player: {fileID: 2806040483122118885}
+  recoveryCollider: {fileID: 0}
+--- !u!54 &367765103903432090
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8109674522399244683}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0.1
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 8
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 2
+  m_Constraints: 112
+  m_CollisionDetection: 2
 --- !u!1 &8949518919502819448
 GameObject:
   m_ObjectHideFlags: 0
@@ -694,6 +916,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6119491206870901436}
+  - {fileID: 5958833623544607815}
   m_Father: {fileID: 8265711683795251022}
   m_LocalEulerAnglesHint: {x: -70.03, y: 90.766, z: 0}
 --- !u!20 &915159069525996557

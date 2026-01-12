@@ -8,6 +8,7 @@ public sealed class Player : MonoBehaviour
     public Rigidbody playerRigidbody;
     public Hand hand;
     public PlayerInputActions input;
+    public PlayerMovement playerMovement;
 
     private void Awake()
     {

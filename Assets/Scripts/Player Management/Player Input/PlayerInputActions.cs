@@ -120,13 +120,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Slam"",
-                    ""type"": ""Button"",
+                    ""name"": ""Grapple"",
+                    ""type"": ""Value"",
                     ""id"": ""65ff5ff1-3b5d-45bd-9118-5daef7f3f780"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -210,11 +210,11 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ebe3c54e-8404-434e-84c4-826d76369c64"",
-                    ""path"": ""<Keyboard>/ctrl"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Slam"",
+                    ""action"": ""Grapple"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -336,7 +336,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Movement_Direction = m_Movement.FindAction("Direction", throwIfNotFound: true);
         m_Movement_Jump = m_Movement.FindAction("Jump", throwIfNotFound: true);
         m_Movement_Dash = m_Movement.FindAction("Dash", throwIfNotFound: true);
-        m_Movement_Slam = m_Movement.FindAction("Slam", throwIfNotFound: true);
+        m_Movement_Grapple = m_Movement.FindAction("Grapple", throwIfNotFound: true);
         // CardUsage
         m_CardUsage = asset.FindActionMap("CardUsage", throwIfNotFound: true);
         m_CardUsage_Use = m_CardUsage.FindAction("Use", throwIfNotFound: true);
@@ -428,7 +428,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Movement_Direction;
     private readonly InputAction m_Movement_Jump;
     private readonly InputAction m_Movement_Dash;
-    private readonly InputAction m_Movement_Slam;
+    private readonly InputAction m_Movement_Grapple;
     /// <summary>
     /// Provides access to input actions defined in input action map "Movement".
     /// </summary>
@@ -453,9 +453,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Dash => m_Wrapper.m_Movement_Dash;
         /// <summary>
-        /// Provides access to the underlying input action "Movement/Slam".
+        /// Provides access to the underlying input action "Movement/Grapple".
         /// </summary>
-        public InputAction @Slam => m_Wrapper.m_Movement_Slam;
+        public InputAction @Grapple => m_Wrapper.m_Movement_Grapple;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -491,9 +491,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Dash.started += instance.OnDash;
             @Dash.performed += instance.OnDash;
             @Dash.canceled += instance.OnDash;
-            @Slam.started += instance.OnSlam;
-            @Slam.performed += instance.OnSlam;
-            @Slam.canceled += instance.OnSlam;
+            @Grapple.started += instance.OnGrapple;
+            @Grapple.performed += instance.OnGrapple;
+            @Grapple.canceled += instance.OnGrapple;
         }
 
         /// <summary>
@@ -514,9 +514,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Dash.started -= instance.OnDash;
             @Dash.performed -= instance.OnDash;
             @Dash.canceled -= instance.OnDash;
-            @Slam.started -= instance.OnSlam;
-            @Slam.performed -= instance.OnSlam;
-            @Slam.canceled -= instance.OnSlam;
+            @Grapple.started -= instance.OnGrapple;
+            @Grapple.performed -= instance.OnGrapple;
+            @Grapple.canceled -= instance.OnGrapple;
         }
 
         /// <summary>
@@ -719,12 +719,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDash(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Slam" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Grapple" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnSlam(InputAction.CallbackContext context);
+        void OnGrapple(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "CardUsage" which allows adding and removing callbacks.

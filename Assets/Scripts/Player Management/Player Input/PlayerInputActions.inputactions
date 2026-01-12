@@ -34,13 +34,13 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Slam",
-                    "type": "Button",
+                    "name": "Grapple",
+                    "type": "Value",
                     "id": "65ff5ff1-3b5d-45bd-9118-5daef7f3f780",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -124,11 +124,11 @@
                 {
                     "name": "",
                     "id": "ebe3c54e-8404-434e-84c4-826d76369c64",
-                    "path": "<Keyboard>/ctrl",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Slam",
+                    "action": "Grapple",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

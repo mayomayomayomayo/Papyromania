@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using UnityEngine.InputSystem;
 using System;
 
@@ -19,17 +18,15 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Jump")]
     public float jumpForce;
-    public Cooldown jumpCooldown;
+    public Timer jumpCooldown;
 
     [Header("Dash")]
     public float dashForce;
-    public Cooldown dashCooldown;
+    public Timer dashCooldown;
 
     [NonSerialized] public bool hasDash;
 
-    [Header("Slam")]
-    public float slamFallSpeed;
-    public Cooldown slamCooldown;
+    public GrappleHandler grapple;
 
     [Header("Grounding")]
     public float groundCheckSphereRadius;
@@ -47,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
         rb = player.playerRigidbody;
         cam = player.playerCamera;
         input = player.input.Movement;
+
         groundCheckDistance = GetComponent<CapsuleCollider>().height / 2;
     }
 
@@ -108,7 +106,7 @@ public class PlayerMovement : MonoBehaviour
         rb.linearVelocity = Vector3.Scale(rb.linearVelocity, new(1, 0, 1));
         rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
         
-        jumpCooldown.Trigger();
+        jumpCooldown.Start();
     }
 
     private void TryDash(InputAction.CallbackContext ctx)
@@ -122,42 +120,40 @@ public class PlayerMovement : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         rb.AddForce(dashDirection * dashForce, ForceMode.VelocityChange);
 
-        dashCooldown.Trigger();
-    }
-    
-    private void TrySlam(InputAction.CallbackContext ctx)
-    {
-        if (IsGrounded() || !slamCooldown.Ready) return;
-        
-        rb.linearVelocity = Vector3.down * slamFallSpeed;
-
-        slamCooldown.Trigger();
+        dashCooldown.Start();
     }
 
     internal void SubscribeActions()
     {
-        player.input.Movement.Jump.performed += TryJump;
-        player.input.Movement.Dash.performed += TryDash;
-        player.input.Movement.Slam.performed += TrySlam;
+        input.Jump.performed += TryJump;
+
+        input.Dash.performed += TryDash;
     }
 
     internal void UnsubscribeActions()
     {
-        player.input.Movement.Jump.performed -= TryJump;
-        player.input.Movement.Dash.performed -= TryDash;
-        player.input.Movement.Slam.performed -= TrySlam;
+        input.Jump.performed -= TryJump;
+
+        input.Dash.performed -= TryDash;
     }
 }
 
 [Serializable]
-public class Cooldown
+public class Timer
 {
     public float duration;
+    private float start;
     private float end;
 
-    public Cooldown(float duration) => this.duration = duration;
+    public Timer(float duration) => this.duration = duration;
 
     public bool Ready => Time.time >= end;
 
-    public void Trigger() => end = Time.time + duration;
+    public float Progress => Mathf.Clamp01(Mathf.InverseLerp(start, end, Time.time));
+
+    public void Start()
+    {
+        start = Time.time;
+        end = start + duration;
+    }
 }

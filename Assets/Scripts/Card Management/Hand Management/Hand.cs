@@ -90,7 +90,7 @@ public class Hand : MonoBehaviour
 
     internal void SubscribeActions()
     {
-        PlayerInputActions.CardUsageActions cardUsageMap = player.input.CardUsage; 
+        PlayerInputActions.CardUsageActions cardUsageMap = player.inputContext.input.CardUsage; 
 
         cardUsageMap.Use.performed += _ => Use();
         cardUsageMap.SecondaryUse.performed += _ => SecondaryUse();
@@ -108,7 +108,7 @@ public class Hand : MonoBehaviour
 
     internal void UnsubscribeActions()
     {
-        PlayerInputActions.CardUsageActions cardUsageMap = player.input.CardUsage;
+        PlayerInputActions.CardUsageActions cardUsageMap = player.inputContext.input.CardUsage;
         
         cardUsageMap.Use.performed -= _ => Use();
         cardUsageMap.SecondaryUse.performed -= _ => SecondaryUse();

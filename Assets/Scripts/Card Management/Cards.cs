@@ -13,7 +13,7 @@ public static class Cards
         byName = new();
         cards = new();
 
-        string json = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "cards.json"));
+        string json = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "Cards.json"));
 
         CardData[] rawCards = JsonUtility.FromJson<CardDataArray>(json).cards;
 

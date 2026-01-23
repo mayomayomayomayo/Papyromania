@@ -6,22 +6,13 @@ public sealed class Player : MonoBehaviour
     public Transform playerHandAnchor;
     public Camera playerCamera;
     public Rigidbody playerRigidbody;
-    public Hand hand;
-    public PlayerInputActions input;
+    public Hand playerHand;
     public PlayerMovement playerMovement;
+    public InputContext inputContext;
+    public CapsuleCollider playerCollider;
 
-    private void Awake()
-    {
-        input = new();
-    }
+    public PlayerStats stats;
 
-    private void OnEnable()
-    {
-        input.Enable();
-    }
-
-    private void OnDisable()
-    {
-        input.Disable();
-    }
+    [Header("Movement")]
+    public PlayerMovement movement;
 }

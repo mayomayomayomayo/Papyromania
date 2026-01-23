@@ -244,11 +244,14 @@ GameObject:
   m_Component:
   - component: {fileID: 145921718586170657}
   - component: {fileID: 2806040483122118885}
+  - component: {fileID: 1702991166232766436}
+  - component: {fileID: 2305566672603544081}
+  - component: {fileID: 3983973272719745371}
   - component: {fileID: 5175677346158157263}
   - component: {fileID: 7503625688886015631}
-  - component: {fileID: 6884542324280510736}
-  - component: {fileID: 3983973272719745371}
-  - component: {fileID: 5144952658787851809}
+  - component: {fileID: 6235749399558612718}
+  - component: {fileID: 1495286030241319347}
+  - component: {fileID: 5087650275232339027}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -288,59 +291,19 @@ MonoBehaviour:
   playerHandAnchor: {fileID: 6119491206870901436}
   playerCamera: {fileID: 915159069525996557}
   playerRigidbody: {fileID: 7503625688886015631}
-  hand: {fileID: 3983973272719745371}
-  playerMovement: {fileID: 6884542324280510736}
---- !u!136 &5175677346158157263
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2384048623393635476}
-  m_Material: {fileID: 13400000, guid: 03ba3015b4aec894896d88ea959fba81, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.6
-  m_Height: 3
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &7503625688886015631
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2384048623393635476}
-  serializedVersion: 5
-  m_Mass: 0.5
-  m_LinearDamping: 0
-  m_AngularDamping: 0
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 80
-  m_CollisionDetection: 2
---- !u!114 &6884542324280510736
+  playerHand: {fileID: 3983973272719745371}
+  playerMovement: {fileID: 0}
+  inputContext: {fileID: 1702991166232766436}
+  playerCollider: {fileID: 5175677346158157263}
+  stats:
+    movementSpeed: 40
+    acceleration: 0.15
+    jumpForce: 12
+    jumpCooldownLength: 0.2
+    dashForce: 150
+    dashCooldownLength: 0.5
+  movement: {fileID: 0}
+--- !u!114 &1702991166232766436
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -349,19 +312,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 2384048623393635476}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37d557ca4042e644283a1eaf48520124, type: 3}
+  m_Script: {fileID: 11500000, guid: 0898883d246aeba41a3b60d6f6fc541d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  movementSpeed: 35
-  acceleration: 0.25
-  jumpForce: 15
-  jumpCooldown:
-    duration: 0.1
-  dashForce: 450
-  dashCooldown:
-    duration: 0.5
-  grapple: {fileID: 5144952658787851809}
-  groundCheckSphereRadius: 0.1
+  m_EditorClassIdentifier: Assembly-CSharp::InputContext
+--- !u!114 &2305566672603544081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384048623393635476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96be86a689549944385fb630933b2d59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MovementContext
+  player: {fileID: 2806040483122118885}
 --- !u!114 &3983973272719745371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -665,7 +631,57 @@ MonoBehaviour:
           m_RotationOrder: 4
   maxHandSize: 10
   currentCard: {fileID: 0}
---- !u!114 &5144952658787851809
+--- !u!136 &5175677346158157263
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384048623393635476}
+  m_Material: {fileID: 13400000, guid: 03ba3015b4aec894896d88ea959fba81, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.6
+  m_Height: 3
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &7503625688886015631
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384048623393635476}
+  serializedVersion: 5
+  m_Mass: 0.5
+  m_LinearDamping: 0
+  m_AngularDamping: 0
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 1
+  m_Constraints: 80
+  m_CollisionDetection: 2
+--- !u!114 &6235749399558612718
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -674,25 +690,79 @@ MonoBehaviour:
   m_GameObject: {fileID: 2384048623393635476}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30ca9aeed07aeb149b26eb1f611ae6a0, type: 3}
+  m_Script: {fileID: 11500000, guid: 8859df1a5a2db194e81c1f89506c5dcb, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Grapple
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   player: {fileID: 0}
-  hook: {fileID: 0}
-  state: 0
-  windIncreasePerTick: 0
-  minWind: 0
-  maxWind: 0
-  grappleStrengthCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  grappleLaunchForce: 0
-  grapplePullSpeed: 0
-  grappleRecoverSpeed: 0
-  grappleRange: 0
+  rb: {fileID: 0}
+  cam: {fileID: 0}
+  moveCtx: {fileID: 0}
+  key:
+    m_Name: Key
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: f0781301-ca4c-420a-8b15-cb70d418125b
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  cooldown:
+    duration: 0
+--- !u!114 &1495286030241319347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384048623393635476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c17990ec6eda0b64ab789ad18d02237a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::JumpManager
+  player: {fileID: 0}
+  rb: {fileID: 0}
+  cam: {fileID: 0}
+  moveCtx: {fileID: 0}
+  key:
+    m_Name: Key
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: faa28adf-8511-4ee5-80e0-f8d0bc03b351
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  cooldown:
+    duration: 0
+--- !u!114 &5087650275232339027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384048623393635476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b1268a7cbe94b34ca06682f58a04dcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DashManager
+  player: {fileID: 0}
+  rb: {fileID: 0}
+  cam: {fileID: 0}
+  moveCtx: {fileID: 0}
+  key:
+    m_Name: Key
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 3b6d2166-e9ae-4d95-86ad-8ce3e6c83c97
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  cooldown:
+    duration: 0
+  hasDash: 0
 --- !u!1 &7543057845778770997
 GameObject:
   m_ObjectHideFlags: 0
@@ -736,8 +806,8 @@ GameObject:
   - component: {fileID: 6158315076909912339}
   - component: {fileID: 7811921895830237653}
   - component: {fileID: 5678994296265652922}
-  - component: {fileID: 7964453181966839780}
   - component: {fileID: 367765103903432090}
+  - component: {fileID: 1804445816255887813}
   m_Layer: 0
   m_Name: GrappleHook
   m_TagString: Untagged
@@ -830,7 +900,7 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -838,21 +908,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7964453181966839780
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8109674522399244683}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9979e27e997050d489eef4d1f7cf0400, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GrappleHook
-  rb: {fileID: 367765103903432090}
-  player: {fileID: 2806040483122118885}
-  recoveryCollider: {fileID: 0}
 --- !u!54 &367765103903432090
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -872,7 +927,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
@@ -880,6 +935,27 @@ Rigidbody:
   m_Interpolate: 2
   m_Constraints: 112
   m_CollisionDetection: 2
+--- !u!135 &1804445816255887813
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8109674522399244683}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 8
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 4
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8949518919502819448
 GameObject:
   m_ObjectHideFlags: 0

@@ -26,7 +26,7 @@ public abstract class MovementManager : MonoBehaviour
         cam = player.playerCamera;
 
         moveCtx = GetComponent<MovementContext>();
-        input = player.inputContext.input.Movement;
+        input = player.playerInputCtx.input.Movement;
 
         DelayedAwake();
     }

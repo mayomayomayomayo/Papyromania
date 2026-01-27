@@ -52,7 +52,7 @@ public class MovementContext : MonoBehaviour
 
     private void FixedUpdate()
     {
-        MoveInput = player.inputContext.input.Movement.Direction.ReadValue<Vector2>();
+        MoveInput = player.playerInputCtx.input.Movement.Direction.ReadValue<Vector2>();
         Forward = player.playerCamera.transform.forward.normalized;
         Right = player.playerCamera.transform.right.normalized;
         Forward2D = Vector3.Scale(Forward, new(1, 0, 1)).normalized;

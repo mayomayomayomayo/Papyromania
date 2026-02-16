@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-public class PlayerMovement : MovementManager
+public class PlayerMovement : DepMovementManager
 {
     private void FixedUpdate()
     {

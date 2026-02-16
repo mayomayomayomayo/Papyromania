@@ -244,14 +244,12 @@ GameObject:
   m_Component:
   - component: {fileID: 145921718586170657}
   - component: {fileID: 2806040483122118885}
-  - component: {fileID: 1702991166232766436}
-  - component: {fileID: 2305566672603544081}
   - component: {fileID: 3983973272719745371}
   - component: {fileID: 5175677346158157263}
   - component: {fileID: 7503625688886015631}
-  - component: {fileID: 6235749399558612718}
-  - component: {fileID: 1495286030241319347}
-  - component: {fileID: 5087650275232339027}
+  - component: {fileID: 2151941078646888936}
+  - component: {fileID: 135084430065646117}
+  - component: {fileID: 4093364809371671987}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -288,46 +286,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db379f39b6cd7074c8ae02b7a60cf405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerHandAnchor: {fileID: 6119491206870901436}
-  playerCamera: {fileID: 915159069525996557}
-  playerRigidbody: {fileID: 7503625688886015631}
-  playerHand: {fileID: 3983973272719745371}
-  playerMovement: {fileID: 0}
-  inputContext: {fileID: 1702991166232766436}
-  playerCollider: {fileID: 5175677346158157263}
   stats:
     movementSpeed: 40
     acceleration: 0.15
     jumpForce: 12
-    jumpCooldownLength: 0.2
-    dashForce: 150
+    jumpCooldownLength: 0.1
+    wallJumpPushForce: 500
+    wallJumpVerticalForce: 500
+    dashForce: 170
     dashCooldownLength: 0.5
-  movement: {fileID: 0}
---- !u!114 &1702991166232766436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2384048623393635476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0898883d246aeba41a3b60d6f6fc541d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InputContext
---- !u!114 &2305566672603544081
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2384048623393635476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96be86a689549944385fb630933b2d59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MovementContext
-  player: {fileID: 2806040483122118885}
+    wallCheckDistance: 1
+    wallrunDrop: 0.5
+    minimumWallrunVelocity: 200
+    wallrunPushForce: 1
+  movement:
+    ctx: {fileID: 2151941078646888936}
+    movementManager: {fileID: 135084430065646117}
+    jumpManager: {fileID: 0}
+    dashManager: {fileID: 0}
+  cardManagement:
+    handAnchor: {fileID: 6119491206870901436}
+    hand: {fileID: 3983973272719745371}
+  physical:
+    cam: {fileID: 915159069525996557}
+    rb: {fileID: 7503625688886015631}
+    collider: {fileID: 5175677346158157263}
 --- !u!114 &3983973272719745371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -681,7 +664,7 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 80
   m_CollisionDetection: 2
---- !u!114 &6235749399558612718
+--- !u!114 &2151941078646888936
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -690,25 +673,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2384048623393635476}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8859df1a5a2db194e81c1f89506c5dcb, type: 3}
+  m_Script: {fileID: 11500000, guid: 83fcb32f68838a14f849a56cb7c10f89, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  player: {fileID: 0}
-  rb: {fileID: 0}
-  cam: {fileID: 0}
-  moveCtx: {fileID: 0}
-  key:
-    m_Name: Key
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: f0781301-ca4c-420a-8b15-cb70d418125b
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  cooldown:
-    duration: 0
---- !u!114 &1495286030241319347
+  m_EditorClassIdentifier: Assembly-CSharp::MovementContext
+--- !u!114 &135084430065646117
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -717,25 +685,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 2384048623393635476}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c17990ec6eda0b64ab789ad18d02237a, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f03aa972559a584a90d88c2badcd832, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::JumpManager
+  m_EditorClassIdentifier: Assembly-CSharp::MovementManager
   player: {fileID: 0}
-  rb: {fileID: 0}
-  cam: {fileID: 0}
-  moveCtx: {fileID: 0}
-  key:
-    m_Name: Key
+  triggerKey:
+    m_Name: Trigger Key
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: faa28adf-8511-4ee5-80e0-f8d0bc03b351
+    m_Id: 688970fa-df22-45e2-bed4-346e5f209fc1
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
   cooldown:
     duration: 0
---- !u!114 &5087650275232339027
+  controlFactor: 1
+  defaultControlReturnCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &4093364809371671987
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -744,25 +716,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 2384048623393635476}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b1268a7cbe94b34ca06682f58a04dcc, type: 3}
+  m_Script: {fileID: 11500000, guid: bbb799f1093d8184db104a08034deea3, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DashManager
+  m_EditorClassIdentifier: Assembly-CSharp::WallrunManager
   player: {fileID: 0}
-  rb: {fileID: 0}
-  cam: {fileID: 0}
-  moveCtx: {fileID: 0}
-  key:
-    m_Name: Key
+  triggerKey:
+    m_Name: Trigger Key
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 3b6d2166-e9ae-4d95-86ad-8ce3e6c83c97
+    m_Id: 3e6999b8-2700-4e62-8cd0-79a3e010cf0e
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
   cooldown:
     duration: 0
-  hasDash: 0
+  isWallrunning: 0
 --- !u!1 &7543057845778770997
 GameObject:
   m_ObjectHideFlags: 0

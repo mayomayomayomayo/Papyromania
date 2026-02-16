@@ -3,17 +3,18 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Player))]
-public abstract class DepMovementManager : MonoBehaviour
+public abstract class MovementComponent : MonoBehaviour
 {
     public Player player;
-    public Rigidbody rb;
-    public Camera cam;
 
-    public MovementContext moveCtx;
-    public PlayerInputActions.MovementActions input;
+    [Header("Easy access")]
+    protected Rigidbody rb;
+    protected Camera cam;
+    protected MovementContext mctx;
+    protected PlayerInputActions.MovementActions input;
 
     [Header("Reactive")]
-    public InputAction key;
+    public InputAction triggerKey;
     public Action<InputAction.CallbackContext> listener;
     public Action callback;
     public Timer cooldown;
@@ -23,8 +24,7 @@ public abstract class DepMovementManager : MonoBehaviour
         player = GetComponent<Player>();
         rb = player.physical.rb;
         cam = player.physical.cam;
-
-        moveCtx = player.movement.ctx;
+        mctx = player.movement.ctx;
         input = player.movement.ctx.input.Movement;
 
         DelayedAwake();
@@ -32,13 +32,13 @@ public abstract class DepMovementManager : MonoBehaviour
 
     protected virtual void DelayedAwake() {}
 
-    protected void SetCallback(Action callback) // Run before OnEnable
+    protected void SetCallback(Action callback)
     {
         this.callback = callback;
         listener = _ => callback?.Invoke();
     }
 
-    protected void SetKey(InputAction key) => this.key = key;
+    protected void SetKey(InputAction key) => triggerKey = key;
 
     protected void AssignKey(InputAction key, Action callback)
     {
@@ -46,13 +46,14 @@ public abstract class DepMovementManager : MonoBehaviour
         SetCallback(callback);
     }
 
+    // Managed Enable/Disable
     protected virtual void OnEnable()
     {
-        if (key != null && listener != null) key.performed += listener;
+        if (triggerKey != null && listener != null) triggerKey.performed += listener;
     }
 
     protected virtual void OnDisable() 
     {
-        if (key != null && listener != null) key.performed -= listener;
+        if (triggerKey != null && listener != null) triggerKey.performed -= listener;
     }
 }

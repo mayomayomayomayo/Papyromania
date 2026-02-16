@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DashManager : MovementManager
+public class DashManager : DepMovementManager
 {
     public bool hasDash;
 
@@ -11,13 +11,13 @@ public class DashManager : MovementManager
     }
 
     // Ew, per-frame checking
-    private void FixedUpdate() => hasDash |= moveCtx.CheckGrounded();
+    private void FixedUpdate() => hasDash |= moveCtx.IsGrounded();
 
     private void TryDash()
     {
         if (!hasDash || !cooldown.Ready) return;
 
-        Rigidbody rb = player.playerRigidbody;
+        Rigidbody rb = player.physical.rb;
 
         Vector2 input = moveCtx.MoveInput != Vector2.zero ? moveCtx.MoveInput : new (0, 1);
 

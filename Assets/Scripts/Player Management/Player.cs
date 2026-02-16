@@ -1,20 +1,61 @@
+using System;
 using UnityEngine;
 
+[DefaultExecutionOrder(-40)]
 public sealed class Player : MonoBehaviour
 {
-    [Header("Refs")]
-    public Transform playerHandAnchor;
-    public Camera playerCamera;
-    public Rigidbody playerRigidbody;
-    public Hand playerHand;
-    public InputContext playerInputCtx;
-    public CapsuleCollider playerCollider;
-
     public PlayerStats stats;
 
-    [Header("Movement")]
-    public MovementContext playerMovementCtx;
-    public PlayerMovement playerMovementManager;
-    public JumpManager playerJumpManager;
-    public DashManager playerDashManager;
+    public Movement movement;
+
+    public CardManagement cardManagement;
+
+    public Physical physical;
+
+    [Serializable]
+    public class Movement
+    {
+        public MovementContext ctx;
+        public MovementManager movementManager;
+        public JumpManager jumpManager;
+        public DashManager dashManager;
+    }
+
+    [Serializable]
+    public class CardManagement
+    {
+        public Transform handAnchor;
+        public Hand hand;
+    }
+
+    [Serializable]
+    public class Physical
+    {
+        public Camera cam;
+        public Rigidbody rb;
+        public CapsuleCollider collider;
+    }
+
+    [Serializable]
+    public class PlayerStats
+    {
+        [Header("Movement")]
+        public float movementSpeed;
+        public float acceleration;
+
+        public float jumpForce;
+        public float jumpCooldownLength;
+
+        public float wallJumpPushForce;
+        public float wallJumpVerticalForce;
+
+        public float dashForce;
+        public float dashCooldownLength;
+
+        public float wallCheckDistance;
+        public float wallrunDrop;
+        public float minimumWallrunVelocity;
+        public float wallrunPushForce;
+    }
 }
+

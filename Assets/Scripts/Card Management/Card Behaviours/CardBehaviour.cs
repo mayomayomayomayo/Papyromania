@@ -43,9 +43,9 @@ public abstract class CardBehaviour : MonoBehaviour
 
             state = CardState.InHand;
 
-            transform.SetParent(player.playerHandAnchor);
+            transform.SetParent(player.cardManagement.handAnchor);
 
-            player.playerHand.handStructure.AddCard(owner);
+            player.cardManagement.hand.handStructure.AddCard(owner);
         }
     }
 

@@ -36,3 +36,10 @@ public static class CoroutineUtils
         cr = null;
     }
 }
+
+public static class VectorUtils
+{
+    public static Vector3 NeuterX(this Vector3 v) => new (0f, v.y, v.z);
+    public static Vector3 NeuterY(this Vector3 v) => new (v.x, 0f, v.z);
+    public static Vector3 NeuterZ(this Vector3 v) => new (v.x, v.y, 0f);
+}

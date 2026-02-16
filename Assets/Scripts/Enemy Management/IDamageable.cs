@@ -6,5 +6,5 @@ public interface IDamageable
         NoKnockback
     }
 
-    public void TakeDamage(float damage, DamageType t);
+    public void TakeDamage(float damage, DamageType t = DamageType.NoKnockback);
 }

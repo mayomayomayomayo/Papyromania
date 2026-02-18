@@ -37,31 +37,38 @@ public sealed class MovementContext : MonoBehaviour
         return wallHit;
     }
 
-    public bool IsHuggingWall(out Vector3 wallNormal)
+    public bool PredictNextFixedUpdateCollision(out Vector3 collisionNormal)
     {
-        float side = MoveInput.x;
-        
-        if (side == 0f) // Cause zero-length vectors piss off Physics.Raycast
-        {
-            wallNormal = Vector3.zero;
-            return false;
-        }
+        collisionNormal = Vector3.zero;
 
-        bool isHugging = Physics.Raycast(
-            transform.position,
-            p.physical.cam.transform.right * Mathf.Sign(side),
-            out RaycastHit hit,
-            p.stats.wallCheckDistance
+        p.physical.collider.ExtractCapsuleInformation(out Vector3 p1, out Vector3 p2, out float radius);
+
+        Vector3 vel = p.physical.rb.linearVelocity;
+        Vector3 dir = vel.normalized;
+        float dist = vel.magnitude * Time.fixedDeltaTime;
+
+        if (dist < Mathf.Epsilon) 
+            return false; // Optimziation yayyy
+
+        bool hit = Physics.CapsuleCast(
+            p1,
+            p2,
+            radius,
+            dir,
+            out RaycastHit rh,
+            dist,
+            ~(1 << gameObject.layer)
         );
 
-        wallNormal = hit.normal;
+        if (hit)
+            collisionNormal = rh.normal;
 
-        return isHugging;
+        return hit;
     }
 
     private void FixedUpdate()
     {
-        MoveInput = input.Movement.Direction.ReadValue<Vector2>();
+        MoveInput = input.Movement.Direction.ReadValue<Vector2>().ForceMagnitudeOf1();
 
         Transform camTransform = p.physical.cam.transform;
 

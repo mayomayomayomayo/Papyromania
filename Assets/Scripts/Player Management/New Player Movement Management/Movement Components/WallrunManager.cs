@@ -2,12 +2,31 @@ using UnityEngine;
 
 public class WallrunManager : MovementComponent
 {
-    public bool isWallrunning;
+    // DON'T REFACTOR THIS UNTIL YOU'VE MADE LIKE SOME PROGRESS
 
-    private Vector3 wallNormal;
+    [SerializeField] 
+    private float wallJumpLateralForce;
+
+    [SerializeField] 
+    private float wallJumpVerticalForce;
+
+    [SerializeField]
+    private float wallCheckDistance;
+
+    [SerializeField]
+    private float wallrunInwardsPushForce;
+
+    [SerializeField]
+    private float wallrunVelocity;
+
+    public bool isWallrunning;
 
     [SerializeField] 
     private ControlFactorChangeParameters walljumpCfcp;
+
+    private Vector3 wallNormal;
+
+    private float wallSide;
 
     protected override void DelayedAwake()
     {
@@ -19,7 +38,7 @@ public class WallrunManager : MovementComponent
         isWallrunning = true;
 
         rb.useGravity = false;
-        rb.linearVelocity = new(rb.linearVelocity.x, -player.stats.wallrunDrop, rb.linearVelocity.z);
+        rb.linearVelocity = rb.linearVelocity.NeuterY();
     }
 
     private void StopWallrun()
@@ -32,9 +51,9 @@ public class WallrunManager : MovementComponent
     private void AddWallrunForces()
     {
         float forwardSpeed = Vector3.Dot(rb.linearVelocity, transform.forward);
-        float neededForce = player.stats.minimumWallrunVelocity - forwardSpeed;
+        float neededForce = wallrunVelocity - forwardSpeed;
         
-        rb.AddForce(transform.forward * neededForce + -wallNormal * player.stats.wallrunPushForce);
+        rb.AddForce(transform.forward * neededForce + -wallNormal * wallrunInwardsPushForce);
     }
 
     private void TryWalljump()
@@ -46,25 +65,58 @@ public class WallrunManager : MovementComponent
 
         player.movement.movementManager.TemporaryControlReduction(walljumpCfcp);
 
-        rb.AddForce(Vector3.up * player.stats.wallJumpVerticalForce + wallNormal * player.stats.wallJumpPushForce);
+        rb.AddForce(Vector3.up * wallJumpVerticalForce + wallNormal * wallJumpLateralForce);
 
         // TODO ADD TIMER
     }
 
     private void FixedUpdate() // Kinda gross but okies
     {
-        bool huggingWall = mctx.IsHuggingWall(out wallNormal) && !mctx.IsGrounded();
-
-        if (!isWallrunning && huggingWall)
+        if (!isWallrunning)
         {
-            StartWallrun();
+            if (IsHuggingWall(out wallNormal, out wallSide) && !mctx.IsGrounded()) 
+                StartWallrun(); 
         }
 
-        if (isWallrunning)
+        else // if (isWallrunning) (for clarity's sake; i'm stupid)
         {
+            bool huggingWall = Physics.Raycast(
+                transform.position,
+                cam.transform.right * wallSide,
+                out RaycastHit hit,
+                wallCheckDistance
+            );
+
+            wallNormal = hit.normal;
+
+            if (!huggingWall || mctx.MoveInput.x * wallSide < 0f || mctx.MoveInput.y < 0.1f) StopWallrun();
+
             AddWallrunForces();
-
-            if (!huggingWall) StopWallrun();
         }
+    }
+
+    public bool IsHuggingWall(out Vector3 wallNormal, out float side)
+    {
+        side = 0f;
+        
+        if (mctx.MoveInput.x == 0f)
+        {
+            wallNormal = Vector3.zero;
+            return false;
+        }
+        
+        float inputSign = Mathf.Sign(mctx.MoveInput.x);
+        
+        bool isHugging = Physics.Raycast(
+            transform.position,
+            cam.transform.right * inputSign,
+            out RaycastHit hit,
+            wallCheckDistance
+        );
+        
+        wallNormal = hit.normal;
+        side = inputSign;
+        
+        return isHugging;
     }
 }

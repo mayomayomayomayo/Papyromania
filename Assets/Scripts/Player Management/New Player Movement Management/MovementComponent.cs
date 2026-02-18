@@ -17,7 +17,6 @@ public abstract class MovementComponent : MonoBehaviour
     public InputAction triggerKey;
     public Action<InputAction.CallbackContext> listener;
     public Action callback;
-    public Timer cooldown;
 
     private void Awake()
     {

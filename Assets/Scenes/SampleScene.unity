@@ -259,8 +259,8 @@ Transform:
   m_GameObject: {fileID: 188630394}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 30.3, y: 4.48, z: 86.299995}
-  m_LocalScale: {x: 68.876, y: 1, z: 28.141}
+  m_LocalPosition: {x: 30.3, y: 4.48, z: 161.4485}
+  m_LocalScale: {x: 219.17032, y: 1, z: 28.141}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 573374800}
@@ -510,6 +510,60 @@ Transform:
   - {fileID: 410087041}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &808025392 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2384048623393635476, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+  m_PrefabInstance: {fileID: 5387417978703635200}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &808025411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808025392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f96eba413dd8402428509b29519463fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DashManager
+  player: {fileID: 0}
+  triggerKey:
+    m_Name: Trigger Key
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 2b9d2aa1-ef4d-4831-acab-cc2c4fd9f237
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  hasDash: 0
+  cooldown:
+    duration: 0
+  smallDashForce: 120
+  longDashForce: 150
+  dashChargeRate: 1
+  minimumDirectedDashCharge: 0.5
+  maximumDashCharge: 1
+  maximumLongDashDistance: 1000
+  longDashStopDistance: 1
+  chargingRigidbodyVelocityMitigation: 0.2
+  cfcp:
+    initialValue: 0.1
+    initialReducedValuePleateau: 0
+    recoveryPeriodLength: 0.5
+    maximumValue: 1
+--- !u!114 &808025414 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4093364809371671987, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+  m_PrefabInstance: {fileID: 5387417978703635200}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808025392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb799f1093d8184db104a08034deea3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WallrunManager
 --- !u!1 &850268627
 GameObject:
   m_ObjectHideFlags: 0
@@ -1206,25 +1260,73 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 135084430065646117, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      propertyPath: predictiveCollisionVelocityReduction
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 326144226389917500, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
       propertyPath: m_Name
       value: PlayerContainer
       objectReference: {fileID: 0}
+    - target: {fileID: 2806040483122118885, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      propertyPath: movement.dashManager
+      value: 
+      objectReference: {fileID: 808025411}
+    - target: {fileID: 2806040483122118885, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      propertyPath: movement.wallrunManager
+      value: 
+      objectReference: {fileID: 808025414}
     - target: {fileID: 4093364809371671987, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
       propertyPath: isWallrunning
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4093364809371671987, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
-      propertyPath: walljumpCfcp.initialValue
-      value: 0.1
+      propertyPath: wallrunVelocity
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 4093364809371671987, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
-      propertyPath: walljumpCfcp.maximumValue
-      value: 1
+      propertyPath: wallJumpLateralForce
+      value: 700
       objectReference: {fileID: 0}
     - target: {fileID: 4093364809371671987, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
-      propertyPath: walljumpCfcp.recoveryPeriodLength
+      propertyPath: wallJumpVerticalForce
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 5398468892206577655, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      propertyPath: jumpForce
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 5398468892206577655, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      propertyPath: cfcp.initialValue
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5398468892206577655, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      propertyPath: cfcp.maximumValue
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5398468892206577655, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      propertyPath: cooldown.duration
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5398468892206577655, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      propertyPath: jumpCfcp.initialValue
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5398468892206577655, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      propertyPath: jumpCfcp.maximumValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5398468892206577655, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      propertyPath: cfcp.recoveryPeriodLength
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5398468892206577655, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      propertyPath: jumpCfcp.recoveryPeriodLength
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5398468892206577655, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      propertyPath: cfcp.initialReducedValuePleateau
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 8265711683795251022, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1269,7 +1371,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2384048623393635476, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 808025411}
   m_SourcePrefab: {fileID: 100100000, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

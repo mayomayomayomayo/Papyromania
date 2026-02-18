@@ -17,6 +17,7 @@ public sealed class Player : MonoBehaviour
     {
         public MovementContext ctx;
         public MovementManager movementManager;
+        public WallrunManager wallrunManager;
         public JumpManager jumpManager;
         public DashManager dashManager;
     }

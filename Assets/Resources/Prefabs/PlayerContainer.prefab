@@ -250,6 +250,7 @@ GameObject:
   - component: {fileID: 2151941078646888936}
   - component: {fileID: 135084430065646117}
   - component: {fileID: 4093364809371671987}
+  - component: {fileID: 5398468892206577655}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -291,18 +292,18 @@ MonoBehaviour:
     acceleration: 0.15
     jumpForce: 12
     jumpCooldownLength: 0.1
-    wallJumpPushForce: 500
-    wallJumpVerticalForce: 500
+    wallJumpPushForce: 600
+    wallJumpVerticalForce: 300
     dashForce: 170
     dashCooldownLength: 0.5
     wallCheckDistance: 1
-    wallrunDrop: 0.5
-    minimumWallrunVelocity: 200
+    wallrunDrop: 0
+    minimumWallrunVelocity: 250
     wallrunPushForce: 1
   movement:
     ctx: {fileID: 2151941078646888936}
     movementManager: {fileID: 135084430065646117}
-    jumpManager: {fileID: 0}
+    jumpManager: {fileID: 5398468892206577655}
     dashManager: {fileID: 0}
   cardManagement:
     handAnchor: {fileID: 6119491206870901436}
@@ -698,15 +699,6 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
-  cooldown:
-    duration: 0
-  controlFactor: 1
-  defaultControlReturnCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!114 &4093364809371671987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -729,9 +721,47 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
+  wallJumpLateralForce: 600
+  wallJumpVerticalForce: 300
+  wallCheckDistance: 1
+  wallrunInwardsPushForce: 10
+  wallrunVelocity: 250
+  isWallrunning: 0
+  walljumpCfcp:
+    initialValue: 0
+    initialReducedValuePleateau: 0.2
+    recoveryPeriodLength: 0.65
+    maximumValue: 1
+--- !u!114 &5398468892206577655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384048623393635476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08a1c89d4e2e10a4783a67e22a796637, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::JumpManager
+  player: {fileID: 0}
+  triggerKey:
+    m_Name: Trigger Key
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: bd252853-335d-4dfe-ab1c-8f77fcc67402
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
   cooldown:
     duration: 0
-  isWallrunning: 0
+  jumpForce: 0
+  jumpCfcp:
+    initialValue: 0
+    initialReducedValuePleateau: 0
+    recoveryPeriodLength: 0
+    maximumValue: 0
 --- !u!1 &7543057845778770997
 GameObject:
   m_ObjectHideFlags: 0

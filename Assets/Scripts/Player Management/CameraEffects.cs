@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,40 +8,41 @@ using UnityEngine;
 
 public static class CameraEffects
 {
-    // This is a bit cursed isn't it...
-    private static readonly Dictionary<Camera, Dictionary<string, CameraEffect>> effectsByCamera = new();
+    private static readonly Dictionary<Camera, Dictionary<Type, CameraEffect>> effectsByCamera = new();
 
     public static void QuickTriggerEffect<T>(this Camera cam) where T : CameraEffect, new()
     {
-        CameraEffect effect = new T();
+        
         
         CoroutineRunner.Instance.StartCoroutine(QuickTriggerCoroutine());
 
         IEnumerator QuickTriggerCoroutine()
         {
-            effect.OnAdd(cam);
+            CameraEffect effect = cam.AddEffect<T>();
 
             yield return new WaitUntil(() => effect.CurrentRoutine == null);
 
-            effect.OnRemove(cam);
+            cam.RemoveEffect<T>();
         }
     }
 
-    public static void AddEffect<T>(this Camera cam) where T : CameraEffect, new()
+    public static T AddEffect<T>(this Camera cam) where T : CameraEffect, new()
     {
         if (!effectsByCamera.TryGetValue(cam, out var effects))
         {
             effects = effectsByCamera[cam] = new();
         }
 
-        CameraEffect effect = new T();
-        string effectName = effect.GetType().Name;
+        if (!effects.TryGetValue(typeof(T), out CameraEffect existing))
+        {
+            CameraEffect effect = new T();
+            effects[typeof(T)] = effect;
+            effect.OnAdd(cam);
 
-        if (!effects.TryGetValue(effectName, out _))
+            return (T)effect;
+        }
 
-        effects[effectName] = effect;
-
-        effect.OnAdd(cam);
+        return (T)existing;
     }
 
     public static void RemoveEffect<T>(this Camera cam) where T : CameraEffect, new()
@@ -50,12 +52,10 @@ public static class CameraEffects
             effects = effectsByCamera[cam] = new();
         }
 
-        string effectName = new T().GetType().Name;
-
-        if (effects.TryGetValue(effectName, out var effect))
+        if (effects.TryGetValue(typeof(T), out var effect))
         {
             effect.OnRemove(cam);
-            effects.Remove(effectName);
+            effects.Remove(typeof(T));
         }
     }
 
@@ -89,5 +89,20 @@ public static class CameraEffects
 
         protected virtual IEnumerator AddEffect(Camera cam) { yield break; }
         protected virtual IEnumerator RemoveEffect(Camera cam) { yield break; }
+    }
+}
+
+public class TestEffect : CameraEffects.CameraEffect
+{
+    protected override IEnumerator AddEffect(Camera cam)
+    {
+        Debug.Log("started effcet");
+        yield return new WaitForSeconds(1);
+    }
+
+    protected override IEnumerator RemoveEffect(Camera cam)
+    {
+        Debug.Log("ended effect");
+        yield return null;
     }
 }

@@ -18,7 +18,7 @@ public class MovementManager : MovementComponent
     }
 
     [SerializeField]
-    public float predictiveCollisionVelocityReduction;
+    private float predictiveCollisionVelocityReduction;
     
     private Coroutine controlFactorChangeCoroutine;
 

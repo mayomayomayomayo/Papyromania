@@ -46,7 +46,7 @@ public class DashManager : MovementComponent
 
     private void BeginDash()
     {
-        if (!hasDash) return;
+        if (!hasDash || !cooldown.Ready) return;
 
         if (dashRoutine != null) StopCoroutine(dashRoutine);
 
@@ -97,6 +97,8 @@ public class DashManager : MovementComponent
         rb.useGravity = true;
 
         player.movement.movementManager.TemporaryControlReduction(cfcp);
+
+        cooldown.Start();
     }
 
     private void ShortDash()

@@ -4,6 +4,9 @@ public class WallrunManager : MovementComponent
 {
     // DON'T REFACTOR THIS UNTIL YOU'VE MADE LIKE SOME PROGRESS
 
+    [SerializeField]
+    private Timer walljumpCooldown;
+    
     [SerializeField] 
     private float wallJumpLateralForce;
 
@@ -58,7 +61,7 @@ public class WallrunManager : MovementComponent
 
     private void TryWalljump()
     {
-        if (!isWallrunning) return;
+        if (!isWallrunning || !walljumpCooldown.Ready) return;
 
         StopWallrun();
         rb.linearVelocity = rb.linearVelocity.NeuterY();
@@ -67,7 +70,7 @@ public class WallrunManager : MovementComponent
 
         rb.AddForce(Vector3.up * wallJumpVerticalForce + wallNormal * wallJumpLateralForce);
 
-        // TODO ADD TIMER
+        walljumpCooldown.Start();
     }
 
     private void FixedUpdate() // Kinda gross but okies

@@ -539,9 +539,9 @@ MonoBehaviour:
     m_Flags: 0
   hasDash: 0
   cooldown:
-    duration: 0
+    duration: 0.5
   smallDashForce: 120
-  longDashForce: 150
+  longDashForce: 300
   dashChargeRate: 1
   minimumDirectedDashCharge: 0.5
   maximumDashCharge: 1

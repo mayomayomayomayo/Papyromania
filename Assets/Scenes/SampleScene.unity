@@ -343,6 +343,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 188630394}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!20 &409160430 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 915159069525996557, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+  m_PrefabInstance: {fileID: 5387417978703635200}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -564,6 +569,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbb799f1093d8184db104a08034deea3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallrunManager
+--- !u!114 &808025423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808025392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f2287635a1c61349a8e19b124387c64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WallrunEffectManager
+  cam: {fileID: 409160430}
 --- !u!1 &850268627
 GameObject:
   m_ObjectHideFlags: 0
@@ -1375,6 +1393,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2384048623393635476, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 808025411}
+    - targetCorrespondingSourceObject: {fileID: 2384048623393635476, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 808025423}
   m_SourcePrefab: {fileID: 100100000, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

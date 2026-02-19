@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class WallrunManager : MovementComponent
@@ -31,6 +32,10 @@ public class WallrunManager : MovementComponent
 
     private float wallSide;
 
+    public event Action OnStartWallrun;
+    public event Action OnWallJump;
+    public event Action OnEndWallrun;
+
     protected override void DelayedAwake()
     {
         AssignKey(input.Jump, TryWalljump);
@@ -42,6 +47,8 @@ public class WallrunManager : MovementComponent
 
         rb.useGravity = false;
         rb.linearVelocity = rb.linearVelocity.NeuterY();
+
+        OnStartWallrun?.Invoke();
     }
 
     private void StopWallrun()
@@ -49,6 +56,8 @@ public class WallrunManager : MovementComponent
         isWallrunning = false;
 
         rb.useGravity = true;
+
+        OnEndWallrun?.Invoke();
     }
 
     private void AddWallrunForces()
@@ -71,6 +80,8 @@ public class WallrunManager : MovementComponent
         rb.AddForce(Vector3.up * wallJumpVerticalForce + wallNormal * wallJumpLateralForce);
 
         walljumpCooldown.Start();
+
+        OnWallJump?.Invoke();
     }
 
     private void FixedUpdate() // Kinda gross but okies

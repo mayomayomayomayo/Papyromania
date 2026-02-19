@@ -107,8 +107,6 @@ public class DashManager : MovementComponent
         Vector3 dashDirection = (mctx.Forward2D * dashInput.y + mctx.Right2D * dashInput.x).normalized;
 
         rb.AddForce(dashDirection * smallDashForce, ForceMode.VelocityChange);
-
-        cam.QuickTriggerEffect<TestEffect>();
     }
 
     private IEnumerator DirectedDash(RaycastHit hit)

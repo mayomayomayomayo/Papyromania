@@ -12,8 +12,6 @@ public static class CameraEffects
 
     public static void QuickTriggerEffect<T>(this Camera cam) where T : CameraEffect, new()
     {
-        
-        
         CoroutineRunner.Instance.StartCoroutine(QuickTriggerCoroutine());
 
         IEnumerator QuickTriggerCoroutine()
@@ -89,20 +87,5 @@ public static class CameraEffects
 
         protected virtual IEnumerator AddEffect(Camera cam) { yield break; }
         protected virtual IEnumerator RemoveEffect(Camera cam) { yield break; }
-    }
-}
-
-public class TestEffect : CameraEffects.CameraEffect
-{
-    protected override IEnumerator AddEffect(Camera cam)
-    {
-        Debug.Log("started effcet");
-        yield return new WaitForSeconds(1);
-    }
-
-    protected override IEnumerator RemoveEffect(Camera cam)
-    {
-        Debug.Log("ended effect");
-        yield return null;
     }
 }

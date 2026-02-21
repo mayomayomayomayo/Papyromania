@@ -124,6 +124,6 @@ public class DashManager : MovementComponent
     {
         hasDash |= mctx.IsGrounded();
 
-        if (player.movement.wallrunManager != null) hasDash |= player.movement.wallrunManager.isWallrunning;
+        if (player.movement.wallrunManager) hasDash |= player.movement.wallrunManager.isWallrunning;
     }
 }

@@ -35,7 +35,7 @@ public class MovementManager : MovementComponent
         
         rb.AddForce((target - current) * player.stats.acceleration * _controlFactor, ForceMode.VelocityChange);
 
-        if (!mctx.IsGrounded() && !(player.movement.wallrunManager != null && player.movement.wallrunManager.isWallrunning))
+        if (!mctx.IsGrounded() && !(player.movement.wallrunManager && player.movement.wallrunManager.isWallrunning))
         {
             if (mctx.PredictNextFixedUpdateCollision(out Vector3 collisionNormal))
             {

@@ -8,7 +8,7 @@ public class CoroutineRunner : MonoBehaviour
     {
         get
         {
-            if (_instance == null)
+            if (!_instance)
             {
                 GameObject runner = new("CoroutineRunner");
                 DontDestroyOnLoad(runner);

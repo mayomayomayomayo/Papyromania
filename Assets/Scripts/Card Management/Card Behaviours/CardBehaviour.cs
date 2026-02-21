@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(BoxCollider))] 
 public abstract class CardBehaviour : MonoBehaviour
 {
     [Header("Owner")]

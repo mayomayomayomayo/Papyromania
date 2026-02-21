@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
+// TODO: Refactor the ENTIRE card pipeline using generics. So much for not knowing this earlier
+
 public static class Cards
 {
     private static Dictionary<string, CardDefinition> byName;
@@ -56,7 +58,7 @@ public static class CardUtils
 {
     private static GameObject _cardCanvasPrefab; 
 
-    public static GameObject CardCanvasPrefab { get { return _cardCanvasPrefab = _cardCanvasPrefab != null ? _cardCanvasPrefab : Resources.Load<GameObject>("Prefabs/CardCanvas"); } }
+    public static GameObject CardCanvasPrefab { get { return _cardCanvasPrefab = _cardCanvasPrefab ? _cardCanvasPrefab : Resources.Load<GameObject>("Prefabs/CardCanvas"); } }
 
     public static GameObject NewCard(Vector3 pos) => UnityEngine.Object.Instantiate(CardCanvasPrefab, pos, Quaternion.identity);
 

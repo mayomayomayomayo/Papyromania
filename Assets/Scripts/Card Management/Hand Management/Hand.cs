@@ -37,21 +37,21 @@ public class Hand : MonoBehaviour
     
     internal void Use()
     {
-        if (currentCard == null) return;
+        if (!currentCard) return;
         if ((currentCard.definition.modifiers & (CardDefinition.CardModifiers.NonUsable | CardDefinition.CardModifiers.NonUsablePrimary)) == 0) 
         currentCard.behaviour.UsePrimary();
     }
 
     internal void SecondaryUse()
     {
-        if (currentCard == null) return;
+        if (!currentCard) return;
         if ((currentCard.definition.modifiers & (CardDefinition.CardModifiers.NonUsable | CardDefinition.CardModifiers.NonUsableSecondary)) == 0)
         currentCard.behaviour.UseSecondary();
     }
 
     internal void Discard()
     {
-        Debug.Log($"discarded {(currentCard != null ? currentCard.name : "something probaby")}");
+        Debug.Log($"discarded {(currentCard ? currentCard.name : "something probaby")}");
     }
 
     public void PreviousCard()
@@ -78,7 +78,7 @@ public class Hand : MonoBehaviour
     
     internal void OnCardAdded(Card card)
     {
-        if (currentCard == null) currentCard = card;
+        if (!currentCard) currentCard = card;
         onHandUpdated?.Invoke();
     }
 

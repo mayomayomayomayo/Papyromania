@@ -3,13 +3,13 @@ using UnityEngine;
 public static class AppStart
 {
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    public static void LoadEverything()
+    public static void Init()
     {
-        ModLoader.LoadAllMods();
+        ModLoader.LoadMods().GetAwaiter().GetResult();
         Cards.Load();
         PathManager.LoadAllSegments();
 
-        foreach (CardDefinition cd in Cards.cards)
+        foreach (DepCardDefinition cd in Cards.cards)
         {
             Cards.CreateCard(cd);
             Cards.CreateCard(cd);

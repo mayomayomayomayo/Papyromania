@@ -41,6 +41,7 @@ public abstract class Projectile : MonoBehaviour
         return isHit;
     }
 
+    // TODO: You actually need, uh, a Collider for this, you fucking numbnut
     protected void OnCollisionEnter(Collision other)
     {
         OnHit((HitInfo)other);
@@ -50,14 +51,17 @@ public abstract class Projectile : MonoBehaviour
 [Serializable]
 public struct ProjectileDamageData
 {
-    public enum Affiliation
+    public enum ProjectileTargets
     {
         Enemy,
         Player,
+        All,
         None
     }
 
     public float Damage { get; private set; }
+
+    public ProjectileTargets Targets { get; private set; }
 }
 
 public struct HitInfo

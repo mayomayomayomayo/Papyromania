@@ -1,40 +1,12 @@
 using UnityEngine;
-using System.Collections;
 
-public static class TransformUtils
+public abstract class MonoVessel<T> : MonoBehaviour
 {
-    public static IEnumerator MoveTo(Transform obj, Transform target, float moveSpeed = 10f, float snapDistance = 0.01f)
-    {
-        while (Vector3.Distance(obj.position, target.position) >= snapDistance)
-        {
-            obj.position = Vector3.Lerp(obj.position, target.position, moveSpeed * Time.deltaTime);
-            yield return null;
-        }
+    public T Item { get; private set; }
 
-        obj.position = target.position;
-    }
+    public void Init(T item) => Item ??= item;
 
-    public static IEnumerator MoveTo(Transform obj, Vector3 target, float moveSpeed = 10f, float snapDistance = 0.01f)
-    {
-        while (Vector3.Distance(obj.position, target) >= snapDistance)
-        {
-            obj.position = Vector3.Lerp(obj.position, target, moveSpeed * Time.deltaTime);
-            yield return null;
-        }
-
-        obj.position = target;
-    }
-}
-
-public static class CoroutineUtils
-{
-    public static void KillCoroutine(this MonoBehaviour caller, ref Coroutine cr)
-    {
-        if (cr == null) return;
-
-        caller.StopCoroutine(cr);
-        cr = null;
-    }
+    public static implicit operator T(MonoVessel<T> mv) => mv.Item;
 }
 
 public static class VectorUtils
@@ -44,14 +16,14 @@ public static class VectorUtils
     public static Vector3 NeuterZ(this Vector3 v) => new (v.x, v.y, 0f);
 
     public static Vector2 ForceMagnitudeOf1(this Vector2 v) => new(v.x != 0 ? Mathf.Sign(v.x) : 0f, v.y != 0 ? Mathf.Sign(v.y) : 0f);
-    public static Vector3 ForceMagnitudeOF1(this Vector3 v) => new(v.x != 0 ? Mathf.Sign(v.x) : 0f, v.y != 0 ? Mathf.Sign(v.y) : 0f, v.z != 0 ? Mathf.Sign(v.z) : 0f);
+    public static Vector3 ForceMagnitudeOf1(this Vector3 v) => new(v.x != 0 ? Mathf.Sign(v.x) : 0f, v.y != 0 ? Mathf.Sign(v.y) : 0f, v.z != 0 ? Mathf.Sign(v.z) : 0f);
 }
 
 public static class ColliderUtils
 {
-    public static void ExtractCapsuleInformation(this CapsuleCollider c, out Vector3 point1, out Vector3 point2, out float radius)
+    public static CapsuleColliderData ExtractCapsuleInformation(this CapsuleCollider c)
     {
-        radius = c.radius * Mathf.Max(
+        float radius = c.radius * Mathf.Max(
             c.transform.lossyScale.x,
             c.transform.lossyScale.z
         );
@@ -61,8 +33,23 @@ public static class ColliderUtils
         Vector3 center = c.transform.TransformPoint(c.center);
         float halfHeight = height / 2f - radius;
 
-        point1 = center + c.transform.up * halfHeight;
-        point2 = center - c.transform.up * halfHeight;
+        Vector3 point1 = center + c.transform.up * halfHeight;
+        Vector3 point2 = center - c.transform.up * halfHeight;
+
+        return new (point1, point2, radius);
     }
     
+    public struct CapsuleColliderData
+    {
+        public Vector3 point1;
+        public Vector3 point2;
+        public float radius;
+
+        public CapsuleColliderData(Vector3 p1, Vector3 p2, float r)
+        {
+            point1 = p1;
+            point2 = p2;
+            radius = r;
+        }
+    }
 }

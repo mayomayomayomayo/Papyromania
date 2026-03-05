@@ -1,0 +1,180 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+using UnityEngine;
+
+internal static class ModLoader
+{
+    private static readonly Dictionary<ModID, Mod> _mods;
+
+    internal static IReadOnlyDictionary<ModID, Mod> Mods => _mods;
+
+    private static string ModsPath
+    {
+        get
+        {
+            string path = Path.Combine(
+                Application.persistentDataPath,
+                "Mods"
+            );
+
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            return path;
+        }
+    }
+        
+    public static void LoadMods()
+    {
+        _mods.Clear();
+
+        foreach (ModID id in GetLoadingOrder())
+        {
+            _mods[id] = LoadMod();
+        }
+
+        Mod LoadMod()
+        {
+            
+        }
+
+        List<ModID> GetLoadingOrder()
+        {   
+            Dictionary<string, Manifest> manifests = PopulateManifests();
+
+            List<ModID> ordered = new();
+
+            HashSet<ModID> visited = new();
+            HashSet<ModID> visiting = new();
+
+            foreach (string idStr in manifests.Keys)
+            {
+                Visit((ModID)idStr);
+            }
+
+            return ordered;
+
+            void Visit(ModID id)
+            {
+                if (visited.Contains(id)) return;
+
+                if (visiting.Contains(id))
+                    throw new Exception($"Circular dependency when trying to load mod: {id}");
+
+                visiting.Add(id);
+
+                foreach (string dep in manifests[id].deps)
+                {
+                    if (!manifests.ContainsKey(dep))
+                        throw new Exception($"Loading mod [{id}] failed. Missing dependency: {dep}");
+
+                    Visit((ModID)dep);
+                }
+
+                visiting.Remove(id);
+                visited.Add(id);
+
+                ordered.Add(id);
+            }
+        }
+
+        Dictionary<string, Manifest> PopulateManifests()
+        {
+            Dictionary<string, Manifest> manifests = new();
+
+            string[] folders = Directory.GetDirectories(ModsPath);
+
+            foreach (string folder in folders)
+            {
+                Manifest man = GetManifest(folder);
+
+                if (manifests.ContainsKey(man.id))
+                    throw new Exception($"Duplicate mod ID found: {man.id}");
+
+                manifests[man.id] = man;
+            }
+
+            return manifests;
+        } 
+
+        static Manifest GetManifest(string folder)
+        {
+            string path = Path.Combine(folder, "manifest.json");
+
+            if (!File.Exists(path))
+                throw new Exception($"Mod folder {folder} has no manifest.json");
+            
+            string json = File.ReadAllText(path);
+
+            Manifest man;
+            try
+            {
+                man = JsonConvert.DeserializeObject<Manifest>(json);
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Manifest parsing failed for mod folder {folder}: ", e);
+            }
+
+            return man;
+        }
+    }
+
+    internal readonly struct Manifest
+    {
+        internal readonly string id;
+
+        internal readonly string name;
+
+        internal readonly string asmPath;
+
+        internal readonly string[] deps;
+    }
+}
+
+internal class Mod
+{
+    public ModID ID { get; private set; }
+
+    public string Name { get; private set; }
+
+    public Assembly ModAssembly { get; private set; }
+
+    public ModID[] Dependencies { get; private set; }
+
+    public string FolderPath { get; private set; }
+
+    public Mod(string folder)
+    {
+        
+    }
+}
+
+internal readonly struct ModID : IEquatable<ModID>
+{
+    internal readonly string ID;
+    
+    private static readonly Regex _match = new(@"^[a-z0-9_]+$", RegexOptions.Compiled);
+
+    internal ModID(string str)
+    {
+        if (!_match.IsMatch(str))
+            throw new Exception($"Invalid mod ID: {str}");
+        
+        ID = str;
+    }
+
+    public static explicit operator ModID(string id) => new(id);
+    public static implicit operator string(ModID mid) => mid.ID;
+
+    public readonly bool Equals(ModID other) => ID == other.ID;
+    
+    public override readonly bool Equals(object obj) =>
+        obj is ModID other && Equals(other);
+
+    public override readonly int GetHashCode() => ID.GetHashCode();
+}

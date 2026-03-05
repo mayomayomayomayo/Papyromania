@@ -11,6 +11,6 @@ public abstract class EffectManagerComponent<T> : DynamicActionSubHandler where 
     private void Awake()
     {
         target = GetComponent<T>();
-        cam = GetComponent<Player>().physical.cam;
+        cam = MonoSingleton<MovementContext>.Instance.Camera;
     }
 }

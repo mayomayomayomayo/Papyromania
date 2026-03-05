@@ -1,0 +1,20 @@
+[
+    {
+        "id": "mares_handcannon",
+        "name": "Mare's Handcannon",
+        "description": "Weighty halfbreed of pistol and lever rifle. A gun to hold very steady, and even farther away from your face.",
+        "leftField": "500",
+        "rightField": "300",
+        "leftFieldIcon": "Sprites/Glock_77",
+        "rightFieldIcon": "Sprites/Glock_77",
+        "baseSprite": "Sprites/Gun_Card_Template",
+        "artSprite": "Sprites/Glock_77",
+        "effects":
+        [
+            {
+                "$type": "TakeGunpowder, Assembly-CSharp", 
+                "amount": 300
+            }
+        ]
+    }
+]

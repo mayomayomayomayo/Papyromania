@@ -520,7 +520,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2384048623393635476, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
   m_PrefabInstance: {fileID: 5387417978703635200}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &808025411
+--- !u!114 &808025430
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -529,47 +529,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 808025392}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f96eba413dd8402428509b29519463fe, type: 3}
+  m_Script: {fileID: 11500000, guid: 03d1b0a3e1125154297b176ab2ff2a17, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DashManager
-  player: {fileID: 0}
-  triggerKey:
-    m_Name: Trigger Key
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 2b9d2aa1-ef4d-4831-acab-cc2c4fd9f237
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  hasDash: 0
-  cooldown:
+  m_EditorClassIdentifier: Assembly-CSharp::MovementContext
+  _camera: {fileID: 409160430}
+--- !u!114 &808025431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808025392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a674d492cc94db0428448efc805ff745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Movement
+  _speed: 50
+  _accel: 0.2
+--- !u!114 &808025432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808025392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65a6e55cb238b0048ab9bc7c04ba9c3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Jump
+  _cooldown:
     duration: 0.5
-  smallDashForce: 120
-  longDashForce: 300
-  dashChargeRate: 1
-  minimumDirectedDashCharge: 0.5
-  maximumDashCharge: 1
-  maximumLongDashDistance: 1000
-  longDashStopDistance: 1
-  chargingRigidbodyVelocityMitigation: 0.2
-  cfcp:
-    initialValue: 0.1
-    initialReducedValuePleateau: 0
-    recoveryPeriodLength: 0.5
-    maximumValue: 1
---- !u!114 &808025414 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4093364809371671987, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
-  m_PrefabInstance: {fileID: 5387417978703635200}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 808025392}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbb799f1093d8184db104a08034deea3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WallrunManager
---- !u!114 &808025423
+  _jumpForce: 1000
+  _cfcp:
+    initialValue: 0.2
+    plateau: 0
+    recovery: 0.5
+--- !u!114 &808025433
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -578,10 +575,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 808025392}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f2287635a1c61349a8e19b124387c64, type: 3}
+  m_Script: {fileID: 11500000, guid: 6974f51fd6567be46ac001bbda67a796, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WallrunEffectManager
-  cam: {fileID: 409160430}
+  m_EditorClassIdentifier: Assembly-CSharp::Dash
+  _cooldown:
+    duration: 0.5
+  _force: 100
+  _noGravDistance: 15
+  _endOfDashVelocityReduction: 0.4
+  _cfcp:
+    initialValue: 0.2
+    plateau: 0
+    recovery: 0.3
+--- !u!114 &808025434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808025392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ea7da58aa75b98439b88438980cb71c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Wallrun
+  _cooldown:
+    duration: 0
+  _wallJumpLateralForce: 1200
+  _wallJumpVerticalForce: 600
+  _wallCheckDistance: 1
+  _wallrunInwardsPushForce: 100
+  _cfcp:
+    initialValue: 0.1
+    plateau: 0
+    recovery: 0.8
 --- !u!1 &850268627
 GameObject:
   m_ObjectHideFlags: 0
@@ -1289,11 +1316,11 @@ PrefabInstance:
     - target: {fileID: 2806040483122118885, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
       propertyPath: movement.dashManager
       value: 
-      objectReference: {fileID: 808025411}
+      objectReference: {fileID: 0}
     - target: {fileID: 2806040483122118885, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
       propertyPath: movement.wallrunManager
       value: 
-      objectReference: {fileID: 808025414}
+      objectReference: {fileID: 0}
     - target: {fileID: 4093364809371671987, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
       propertyPath: isWallrunning
       value: 0
@@ -1386,16 +1413,31 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2806040483122118885, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+    - {fileID: 3983973272719745371, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+    - {fileID: 2151941078646888936, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+    - {fileID: 135084430065646117, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+    - {fileID: 4093364809371671987, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+    - {fileID: 5398468892206577655, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2384048623393635476, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 808025411}
+      addedObject: {fileID: 808025430}
     - targetCorrespondingSourceObject: {fileID: 2384048623393635476, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 808025423}
+      addedObject: {fileID: 808025431}
+    - targetCorrespondingSourceObject: {fileID: 2384048623393635476, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 808025432}
+    - targetCorrespondingSourceObject: {fileID: 2384048623393635476, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 808025433}
+    - targetCorrespondingSourceObject: {fileID: 2384048623393635476, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 808025434}
   m_SourcePrefab: {fileID: 100100000, guid: de7fce0f4838d0d4e9d6f9f604bf9ea5, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
